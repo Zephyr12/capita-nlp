@@ -17,6 +17,14 @@
   z-index: 1;
 }
 
-img {
-  box-shadow: 0 0 20px #0007;
+#one
+{
+  position:relative;
+  float: left;
+}
+
+#two
+{
+  position:relative;
+  float: right;
 }
