@@ -1,0 +1,22 @@
+#container {
+  position: relative;
+}
+#navi {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+}
+#myCarousel {
+  position: absolute;
+  top: 0;
+   width: 100%;
+}
+
+#infoi {
+  z-index: 1;
+}
+
+img {
+  box-shadow: 0 0 20px #0007;
+}
