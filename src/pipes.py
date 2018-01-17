@@ -12,8 +12,8 @@ class Node:
 
     def process(self, msg):
         results = self.operation(msg)
-        for pipe in self.out_pipes:
-            for result in results:
+        for result in results:
+            for pipe in self.out_pipes:
                 pipe.process(result)
 
 class Source(Node):
@@ -40,7 +40,9 @@ class Merge(Node):
         if key in self.cached:
             self.cached[key].update(msg)
             if self.is_complete(self.cached[key]):
-                super().process([self.cached[key]])
+                cached = self.cached[key]
+                del self.cached[key]
+                super().process([cached])
         else:
             self.cached[key] = msg
 
