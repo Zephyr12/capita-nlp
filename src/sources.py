@@ -12,12 +12,13 @@ class S:
 
 net = nltk.corpus.wordnet
 
-class TweetStreamerSource(pipes.Source):#, tweepy.StreamListener):
+class TweetStreamerSource(pipes.Source, tweepy.StreamListener):
     
     def __init__(self):
         #super(TweetStreamerSource, self).__init__(self)
         self.s = nlp.sentiment()
-        self.n = nlp.ner_classifier(models.get_school_list())
+        self.n = nlp.fuzzy_classifier(models.get_school_list())
+        #self.n = nlp.ner_classifier(models.get_school_list())
 
     def on_status(self, status):
         print(self.n(self.s({
