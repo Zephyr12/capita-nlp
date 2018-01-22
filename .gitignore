@@ -1,4 +1,4 @@
-data/*
+data/*.pkcl
 results/*
 venv/*
 __pycache__/
