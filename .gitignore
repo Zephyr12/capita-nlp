@@ -1,5 +1,6 @@
 data/*.pkcl
 results/*
 venv/*
+src/facebookenv/*
 __pycache__/
 .idea/*
