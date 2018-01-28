@@ -21,7 +21,7 @@ class MyDB:
         sql_create_a_table += "\n);"
 
         try:
-            print(sql_create_a_table)
+            #print(sql_create_a_table)
             c = self.conn.cursor()
             c.execute(sql_create_a_table)
             c.close()
@@ -49,7 +49,7 @@ class MyDB:
         sql = sql[:-1]
         sql += ")\n"
         try:
-            print(sql)
+            #print(sql)
             c = self.conn.cursor()
             c.execute(sql)
             self.conn.commit()
@@ -65,7 +65,7 @@ class MyDB:
     def delete_row_by_id(self, table_name, table_id):
         sql = f"DELETE FROM {table_name} WHERE id={table_id};"
         try:
-            print(sql)
+            #print(sql)
             c = self.conn.cursor()
             c.execute(sql)
             self.conn.commit()
@@ -84,7 +84,7 @@ class MyDB:
         sql = sql[:-1]
         sql += f" WHERE id={key_value_pairs.get('id')};" #get value of id
         try:
-            print(sql)
+            #print(sql)
             c = self.conn.cursor()
             c.execute(sql)
             self.conn.commit()
