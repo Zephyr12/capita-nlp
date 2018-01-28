@@ -2,3 +2,4 @@ data/*.pkcl
 results/*
 venv/*
 __pycache__/
+.idea/*
