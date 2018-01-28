@@ -13,15 +13,15 @@ class MyDB:
     """ create a table from the create_table_sql statement
             :param create_table_sql: a CREATE TABLE statement
             :return:"""
-    def create_table(self):
-        sql_create_a_table = """ CREATE TABLE IF NOT EXISTS  reviews(
-                                                    id integer PRIMARY KEY,
-                                                    raw_text text NOT NULL,
-                                                    concern_id integer NOT NULL,
-                                                    sentiment integer NOT NULL,
-                                                    concerns text NOT NULL
-                                                ); """
+    def create_table(self, table_name, key_value_pairs):
+        sql_create_a_table = f"CREATE TABLE IF NOT EXISTS {table_name}(\n"
+        for key, value in key_value_pairs.items():
+            sql_create_a_table += f"{key} {value},\n"
+        sql_create_a_table = sql_create_a_table[:-2] #delete the last comma
+        sql_create_a_table += "\n);"
+
         try:
+            print(sql_create_a_table)
             c = self.conn.cursor()
             c.execute(sql_create_a_table)
             c.close()
@@ -34,8 +34,6 @@ class MyDB:
     param row:
     return: row id"""
     def add_row(self, table_name, key_value_pairs):
-        # sql = """INSERT INTO reviews(raw_text,concern_id,sentiment,concerns)
-        #              VALUES(?,?,?,?);"""
         sql = f"INSERT INTO {table_name}("
         for key, value in key_value_pairs.items():
             sql += f"{key},"
@@ -65,7 +63,6 @@ class MyDB:
     param id: id of the task
     return:"""
     def delete_row_by_id(self, table_name, table_id):
-        #sql = """DELETE FROM reviews WHERE id=?;"""
         sql = f"DELETE FROM {table_name} WHERE id={table_id};"
         try:
             print(sql)
@@ -84,7 +81,7 @@ class MyDB:
                 sql += f"{key}=\"{value}\","
             else:
                 sql += f"{key}={value},"
-        sql = sql[:-1] #delete the last comma
+        sql = sql[:-1]
         sql += f" WHERE id={key_value_pairs.get('id')};" #get value of id
         try:
             print(sql)
@@ -101,13 +98,12 @@ class MyDB:
 
 
 
-#function to create the table
 def main():
     db = MyDB("/Users/ana9712/testdb.sqlite")
-    db.create_table()
-    db.add_row("reviews", {"raw_text": "UCL is not that great!", "concern_id": 1, "sentiment": 1.4782374, "concerns": "UCL"})
-    db.update_row("reviews", {"id": 4, "raw_text": "new textyt"})
-    db.delete_row_by_id("reviews", 3)
+    db.create_table("reviews", {"id": "integer PRIMARY KEY", "raw_text": "text NOT NULL", "concern_id": "integer NOT NULL", "sentiment": "integer NOT NULL", "concerns": "text NOT NULL"})
+    #db.add_row("reviews", {"raw_text": "UCL is not that great!", "concern_id": 1, "sentiment": 1.4782374, "concerns": "UCL"})
+    #db.update_row("reviews", {"id": 4, "raw_text": "new textyt"})
+    #db.delete_row_by_id("reviews", 7)
 
 if __name__ == '__main__':
     main()
