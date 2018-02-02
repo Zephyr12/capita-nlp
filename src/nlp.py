@@ -22,14 +22,31 @@ class sentiment:
 def fuzz(msg):
     return " ?".join(".?".join(c + "?" if i not in (0, len(w)-1) else c for i, c in enumerate(w)) for w in nltk.word_tokenize(msg))
 
+def initialize(string):
+    return "".join(word[0] for (word, pos) in nltk.pos_tag(nltk.word_tokenize(string)) if pos[:2] == "NN" and word[0] != '\'')
+
+def initials_match(needle, haystack):
+    return 1 if initialize(needle) in nltk.word_tokenize(haystack) else 0
+
+def evaluate(cls, msg):
+    found_text = "".join(re.findall(cls[1], msg["raw_text"]))
+    ratio_score = SequenceMatcher(None, found_text, cls[0]).ratio() 
+    initials_score = initials_match(cls[0], msg["raw_text"])
+    if (initials_score > 0):
+        print("RATIO_SCORE:", ratio_score)
+        print("INITALS_SCORE:", initials_score)
+        print("FOR:", cls)
+        print("WITH:", found_text)
+        print()
+    return ratio_score + initials_score
+
 class fuzzy_classifier:
 
     def __init__(self, classifications):
         self.classes = [(cls, re.compile(fuzz(cls), flags=re.IGNORECASE)) for cls in classifications]
 
     def __call__(self, msg):
-        print(fuzz(msg["raw_text"]))
-        best_phrase = max(self.classes, key=lambda cls: SequenceMatcher(None, "".join(re.findall(cls[1], msg["raw_text"])), cls[0]).ratio())
+        best_phrase = max(self.classes, key=lambda cls: evaluate(cls, msg))
         augment = {
                 "concerns": best_phrase[0]
                 }
@@ -56,12 +73,5 @@ class ner_classifier:
 
 
 if __name__ == "__main__":
-    source = sources.TweetStreamerSource()
-    sentiment_analyser = pipes.Processor(sentiment())
-    ner = pipes.Processor(ner_classifier(["School", "Work", "Other BS"]))
-    sink = pipes.Sink(lambda x: print(x))
-
-    source.add_out_pipe(sentiment_analyser)
-    sentiment_analyser.add_out_pipe(ner)
-    ner.add_out_pipe(sink)
-    source.run().join()
+    for item in models.get_school_list():
+        print(item, " => ", initialize(item))
