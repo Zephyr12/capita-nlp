@@ -1,17 +1,28 @@
 import facebook
 import json
 import requests
+import pandas
 
-my_token = 'EAACEdEose0cBAJJfUEiNDEARrfZC5lTWZBkZBMNv6HIvqDZBUx2yDI3J5laFEca8DhtB0524KevX2ZAlSyt4hn1JF8hH4CW7JOfdJTPOfs4iL6j4fZAw8LLs8bbUhbeFSsm8AKBUj4CBfwO7aMNERiX9hgRMLv1oOzmhyjSTcZAHriJpThekQ09qMZCFJZCj98eZASRsnDxgZAjXGDRa49UGUqP'
+my_token = 'your token'
 BASE_URL = 'https://graph.facebook.com/'
 counter = 0
 
 graph = facebook.GraphAPI(my_token)
-data = graph.request('search', {'q': 'school', 'type': 'event'})
 
-events = json.dumps(data, indent=4, sort_keys=True)
-paging = json.loads(events)
-next_page = paging["paging"]["next"]
+schools = pandas.read_csv("data/EduBase_Schools_UTF-8.csv").school_name.tolist()
+
+
+def get_data(school):
+    global data, events, next_page
+    data = graph.request('search', {'q': school, 'type': 'event'})
+    events = json.dumps(data, indent=4, sort_keys=True)
+    try:
+        next_page = data["paging"]["next"]
+    except KeyError:
+        next_page = None
+
+
+#get_data()
 
 
 def print_event_name_and_description():
@@ -23,7 +34,11 @@ def print_event_name_and_description():
             description = my_data['description']
         except KeyError:
             break
-        print(str(counter) + ": " + name + " : " + description + "\n\n" + "----------------------------------------------------" + "\n")
+        try:
+            location = my_data['place']['location']['city']
+        except KeyError:
+            location = "No location displayed"
+        print(str(counter) + ": " + name + " \n " + "Location: " + location + "\n" + description + "\n\n" + "----------------------------------------------------" + "\n")
 
 def print_pretty_events(events):
     print (json.dumps(events,indent=4,sort_keys=True))
@@ -33,16 +48,25 @@ def print_pretty_events(events):
 
 #print(events)
 
-events = data
-
-while next_page:
-    data = events
-    print_event_name_and_description()
-    #print_pretty_events(data)
-    events = json.loads(requests.get(next_page).text)
-    try:
-        next_page = events["paging"]["next"]
-    except KeyError:
-        break
+#events = data
 
 
+def iterate_throught_pages():
+    global data, events, next_page
+    while next_page:
+        data = events
+        print_event_name_and_description()
+        #print_pretty_events(data)
+        events = json.loads(requests.get(next_page).text)
+        try:
+            next_page = events["paging"]["next"]
+        except KeyError:
+            break
+
+
+#iterate_throught_pages()
+
+for school in schools:
+    get_data(school)
+    events = data
+    iterate_throught_pages()
