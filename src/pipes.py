@@ -1,5 +1,7 @@
 import threading
 
+from src.db import MyDB
+
 Message = dict
 
 class Source:
@@ -35,14 +37,17 @@ class Writer:
 
     def __init__(self, writer):
         self.writer = writer
+        #self.mydb1 = MyDB
 
     def queue(self, item):
         threading.Thread(target=lambda: self.writer(item)).start()
 
 if __name__ == "__main__":
+    db = MyDB("dbname=ana9712 user=ana9712 password=test")
+    db.create_table('reviews', {'raw_text': 'text', 'concern_id': 'integer', 'sentiment': 'real', 'concerns': 'text'})
     src = Source([
-                Processor(
-                        [Writer(lambda x: print("WRITTEN", x))],
-                        lambda x: [x * x])],
-                lambda: range(100000)
-            )
+                    Processor(
+                            [Writer(lambda x: db.add_row("reviews", x))],
+                            lambda x: [x, x])],
+                    lambda: [{"raw_text": "this works", "concern_id": 1, "sentiment": 1.4782374, "concerns": "UCL"}]
+                )
