@@ -51,7 +51,7 @@ def print_event_name_and_description(since):
             print(str(counter) + ": " + name + " \n " + "Location: " + location + "\n" + description + "\n\n" + "----------------------------------------------------" + "\n")
             fields = [name, location, description]
             file_name = since + ".csv"
-            with open(file_name, 'a') as f:
+            with open('../data/'+file_name, 'a') as f:
                 writer = csv.writer(f)
                 writer.writerow(fields)
                 f.close()
@@ -92,7 +92,7 @@ for school in schools:
     now = datetime.datetime.now()
     since = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
     try:
-        with open(since+'.csv') as file:
+        with open('../data/'+since+'.csv') as file:
             print("Queries up-to-date.")
     except IOError as e:
         get_data(school, since)
