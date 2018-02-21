@@ -4,3 +4,4 @@ venv/*
 src/facebookenv/*
 __pycache__/
 .idea/*
+data/*.csv
