@@ -1,4 +1,5 @@
 import threading
+from src import fb, nlp
 
 Message = dict
 
@@ -42,7 +43,7 @@ class Writer:
 if __name__ == "__main__":
     src = Source([
                 Processor(
-                        [Writer(lambda x: print("WRITTEN", x))],
-                        lambda x: [x * x])],
-                lambda: range(100000)
+                        [Writer(lambda x: print(x))],
+                        nlp.sentiment())],
+                fb.run
             )

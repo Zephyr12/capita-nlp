@@ -51,7 +51,7 @@ def print_event_name_and_description(since):
             #print(str(counter) + ": " + name + " \n " + "Location: " + location + "\n" + description + "\n\n" + "----------------------------------------------------" + "\n")
             fields = [name, location, description]
             file_name = since + ".csv"
-            with open('../data/'+file_name, 'a') as f:
+            with open('data/'+file_name, 'a') as f:
                 writer = csv.writer(f)
                 writer.writerow(fields)
                 f.close()
@@ -95,13 +95,13 @@ def run():
         now = datetime.datetime.now()
         since = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
         try:
-            with open('../data/'+since+'.csv') as f:
+            with open('data/'+since+'.csv') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
                     yield row
         except IOError as e:
             file_name = since + ".csv"
-            with open('../data/' + file_name, 'a') as f:
+            with open('data/' + file_name, 'a') as f:
                 writer = csv.DictWriter(f, fieldnames=["name", "location", "raw_text"])
                 writer.writeheader()
             get_data(school, since)
