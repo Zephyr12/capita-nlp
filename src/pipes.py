@@ -1,8 +1,11 @@
 import threading
 
-from src.db import MyDB
+#from src.db import MyDB
+from db import MyDB
 
 Message = dict
+
+#class BufferedIterator():
 
 class Source:
 
@@ -43,7 +46,7 @@ class Writer:
         threading.Thread(target=lambda: self.writer(item)).start()
 
 if __name__ == "__main__":
-    db = MyDB("dbname=ana9712 user=ana9712 password=test")
+    db = MyDB("dbname=capita user=amartya password=test")
     db.create_table('reviews', {'raw_text': 'text', 'concern_id': 'integer', 'sentiment': 'real', 'concerns': 'text'})
     src = Source([
                     Processor(
