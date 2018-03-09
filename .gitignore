@@ -1,4 +1,6 @@
 data/*.pkcl
+data/*.csv
+!data/schools.csv
 results/*
 venv/*
 __pycache__/
