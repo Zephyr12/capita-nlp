@@ -1,10 +1,9 @@
 import tweepy
+import queue
 import nltk
-import models
+from . import models, nlp, pipes
 import nltk.corpus
-import nlp
 import datetime
-import pipes
 
 class S:
     def __init__(self, t):
@@ -12,21 +11,24 @@ class S:
 
 net = nltk.corpus.wordnet
 
-class TweetStreamerSource(pipes.Source, tweepy.StreamListener):
+class TweetStreamerSource(tweepy.StreamListener):
     
     def __init__(self):
-        #super(TweetStreamerSource, self).__init__(self)
-        self.s = nlp.sentiment()
-        self.n = nlp.fuzzy_classifier(models.get_school_list())
-        #self.n = nlp.ner_classifier(models.get_school_list())
+        self.buffer = queue.Queue()
 
     def on_status(self, status):
-        print(self.n(self.s({
+        self.buffer.put({
                 "raw_text": status.text,
                 "id": hash(datetime.datetime.now())
-            })[0])[0])
+            })
 
-    def __call__(self, x):
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.buffer.get()
+
+    def __call__(self):
         self.auth = tweepy.OAuthHandler("TWg3Ywvoa1xzvEim97ww3Roxm", "CBW1yVZwizeTqW2u1UHD1BWuYLjJejptwdiApydAOJs7RUX2kq")
         self.auth.set_access_token("4273627119-IUdTBDAT4YnWxJ6ND2MilBK7fTQ5tGQNjTM5cVX", "LeTYK0GZoIQNdp8HRKsaYbsDtST3psdLpCTSebThV5D8i")
         self.api = tweepy.API(self.auth)
@@ -41,9 +43,4 @@ class TweetStreamerSource(pipes.Source, tweepy.StreamListener):
             for lemma2 in hypo2.lemma_names()])
         '''
         self.stream.filter(follow=["4273627119"], async=True)
-
-if __name__ == "__main__":
-    ts = TweetStreamerSource()
-    ts(None)
-    while True:
-        ts.on_status(S(input(">> ")))
+        return self
