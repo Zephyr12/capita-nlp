@@ -20,13 +20,15 @@ class sentiment:
         return [{**msg, **augment}]
 
 def fuzz(msg):
-    return " ?".join(".?".join(c + "?" if i not in (0, len(w)-1) else c for i, c in enumerate(w)) for w in nltk.word_tokenize(msg))
+    fuzz = " ?".join("(?:" + ".?".join(c + "?" if i not in (0, len(w)-1) else c for i, c in enumerate(w)) + ")?" for w in nltk.word_tokenize(msg) )
+    print(fuzz)
+    return fuzz
 
 def initialize(string):
     return "".join(word[0] for (word, pos) in nltk.pos_tag(nltk.word_tokenize(string)) if pos[:2] == "NN" and word[0] != '\'')
 
 def initials_match(needle, haystack):
-    return 1 if initialize(needle) in nltk.word_tokenize(haystack) else 0
+    return 1 if initialize(needle) in haystack else 0
 
 def evaluate(cls, msg):
     found_text = "".join(re.findall(cls[1], msg["raw_text"]))
