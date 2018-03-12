@@ -68,7 +68,7 @@ class SchoolList(ListView):
 class PostList(ListView):
     def records(self, n, p, before, after, search, **kwargs):
         cursor.execute(
-                "SELECT post FROM post INNER JOIN schools "
+                "SELECT post.* FROM post INNER JOIN schools "
                 "ON post.school_id = schools.establishment_name "
                 "WHERE "
                     "schools.establishment_name = %s and  "
