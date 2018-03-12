@@ -1,8 +1,7 @@
 import threading
-import fb
-import nlp
+from . import fb, nlp
 #from src.db import MyDB
-from db import MyDB
+from .db import MyDB
 
 Message = dict
 

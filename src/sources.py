@@ -8,8 +8,9 @@ import datetime
 
 class TweetStreamerSource(tweepy.StreamListener):
     
-    def __init__(self):
+    def __init__(self, terms):
         self.buffer = queue.Queue()
+        self.terms = terms
 
     def on_status(self, status):
         self.buffer.put({
@@ -28,5 +29,6 @@ class TweetStreamerSource(tweepy.StreamListener):
         self.auth.set_access_token("4273627119-IUdTBDAT4YnWxJ6ND2MilBK7fTQ5tGQNjTM5cVX", "LeTYK0GZoIQNdp8HRKsaYbsDtST3psdLpCTSebThV5D8i")
         self.api = tweepy.API(self.auth)
         self.stream = tweepy.Stream(self.api.auth, self)
-        self.stream.filter(follow=["4273627119"], async=True)
+        print(self.terms)
+        self.stream.filter(track=self.terms, async=True)
         return self
