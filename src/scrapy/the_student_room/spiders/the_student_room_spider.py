@@ -31,6 +31,12 @@ class TheStudentRoom(scrapy.Spider):
                                'International Study']
 
     def parse(self, response):
+        """ This function parses a sample response. Some contracts are mingled
+            with this docstring.
+
+            @url https://www.thestudentroom.co.uk/forumdisplay.php?f=307
+            @returns items 0
+        """
         forums = response.css('.forum-category .forum .info')
         forums.pop(0)
         for subforum_page in forums:
@@ -49,12 +55,30 @@ class TheStudentRoom(scrapy.Spider):
                     yield request
 
     def parse2(self, response):
+        """ This function parses a sample response. Some contracts are mingled
+            with this docstring.
+
+            @url https://www.thestudentroom.co.uk/forumdisplay.php?f=55
+            @returns items 0
+
+            @url https://www.thestudentroom.co.uk/forumdisplay.php?f=845
+            @returns items 0
+
+            @url https://www.thestudentroom.co.uk/forumdisplay.php?f=58
+            @returns items 0
+
+            @url https://www.thestudentroom.co.uk/forumdisplay.php?f=158
+            @returns items 0
+
+            @url https://www.thestudentroom.co.uk/forumdisplay.php?f=21
+            @returns items 0
+        """
         #Pagination in university threads
         try:
             next_page = response.css('ul.pager .pager-ff::attr(href)').extract_first()
             next_page_url = 'https://www.thestudentroom.co.uk/' + next_page
             request = response.follow(next_page_url, self.parse2)
-            request.meta["concerns"] = response.meta["concerns"]
+            request.meta["concerns"] = response.meta.get('concerns')
             yield request
         except TypeError:
             #Thread does not have more pages
@@ -67,17 +91,44 @@ class TheStudentRoom(scrapy.Spider):
                 thread_url = 'https://www.thestudentroom.co.uk/' + \
                              thread.css('a::attr(href)').extract_first()
                 request = response.follow(thread_url, self.parse3)
-                request.meta["concerns"] = response.meta["concerns"]
+                request.meta["concerns"] = response.meta.get('concerns')
                 yield request
 
 
     def parse3(self, response):
+        """ This function parses a sample response. Some contracts are mingled
+            with this docstring.
+
+            @url https://www.thestudentroom.co.uk/showthread.php?t=5152190
+            @returns items 1
+            @scrapes concerns raw_text
+
+            @url https://www.thestudentroom.co.uk/showthread.php?t=4922988
+            @returns items 1
+            @scrapes concerns raw_text
+
+            @url https://www.thestudentroom.co.uk/showthread.php?t=4961436
+            @returns items 1
+            @scrapes concerns raw_text
+
+            @url https://www.thestudentroom.co.uk/showthread.php?t=5030830
+            @returns items 1
+            @scrapes concerns raw_text
+
+            @url https://www.thestudentroom.co.uk/showthread.php?t=2008015
+            @returns items 1
+            @scrapes concerns raw_text
+
+            @url https://www.thestudentroom.co.uk/showthread.php?t=5129204
+            @returns items 1
+            @scrapes concerns raw_text
+        """
         #Pagination to move to next page of each topic.
         try:
             next_page = response.css('ul.pager .pager-ff::attr(href)').extract_first()
             next_page_url = 'https://www.thestudentroom.co.uk/' + next_page
             request = response.follow(next_page_url, self.parse3)
-            request.meta["concerns"] = response.meta["concerns"]
+            request.meta["concerns"] = response.meta.get('concerns')
             yield request
         except TypeError:
             #Topic does not have more pages.
@@ -88,13 +139,15 @@ class TheStudentRoom(scrapy.Spider):
             for post in response.css('.post-content .postcontent'):
                 post_text = post.css('.restore::text').extract()
                 print("---------------------------------------")
-                result = [x.encode('utf-8') for x in post_text]
-                result = "".join(result)
-                myfile.write("Concerns:" + response.meta["concerns"] +
-                             "\nPost: " + result + "\n---\n")
+                encoded_post = [x.encode('utf-8') for x in post_text]
+                encoded_post = "".join(encoded_post)
                 #print(response.meta["concerns"])
-                yield {"concerns:":response.meta["concerns"],
-                       "raw_text:":result}
+                result = dict()
+                result['concerns'] = response.meta.get('concerns')
+                result['raw_text'] = encoded_post
+                yield result
+                # yield {"concerns:":response.meta.get('concerns'),
+                #        "raw_text:":encoded_post}
 
 
 
