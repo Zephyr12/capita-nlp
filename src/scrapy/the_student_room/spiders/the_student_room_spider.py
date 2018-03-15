@@ -1,3 +1,7 @@
+"""
+This script scrapes the www.thestudentroom.co.uk forum for all the posts related to universities.
+"""
+
 import scrapy
 import re
 import json
@@ -5,13 +9,15 @@ import json
 
 class TheStudentRoom(scrapy.Spider):
     name = "student_room"
-    #First three subforums include 'Find your flatmates' forum together with only universities.
+
+    #First three subforums include 'Find your flatmates' threads at the end of universities list. Hence, we count them in order to be eliminated.
     subforums_counter = 0
 
     def start_requests(self):
         url = 'https://www.thestudentroom.co.uk/forumdisplay.php?f=307'
         yield scrapy.Request(url=url, callback=self.parse)
 
+    #Some of the thread names amongst universities are not relevent for our search, thus we avoid scraping them.
     mismatched_universities = ['International Postgraduate Study',
                                'Humanitas University',
                                'Masdar Institute',
@@ -34,9 +40,13 @@ class TheStudentRoom(scrapy.Spider):
         """ This function parses a sample response. Some contracts are mingled
             with this docstring.
 
+            This function is the FIRST LEVEL PARSE, which follows all university
+            related threads.
+
             @url https://www.thestudentroom.co.uk/forumdisplay.php?f=307
             @returns items 0
         """
+
         forums = response.css('.forum-category .forum .info')
         forums.pop(0)
         for subforum_page in forums:
@@ -51,12 +61,18 @@ class TheStudentRoom(scrapy.Spider):
                                  university.css('a::attr(href)').extract_first()
                 if university_name not in self.mismatched_universities:
                     request = response.follow(university_url, self.parse2)
+                    #Stores the university name in the meta of the yielded request, in order to identify every post to its concerned university.
                     request.meta["concerns"] = university_name
                     yield request
 
     def parse2(self, response):
         """ This function parses a sample response. Some contracts are mingled
             with this docstring.
+
+            This is the SECOND LEVEL PARSE, which is called for every university
+            thread. For every university thread, it follows all the topics, and
+            also calls back the same function on the next page of topics
+            is existent.
 
             @url https://www.thestudentroom.co.uk/forumdisplay.php?f=55
             @returns items 0
@@ -98,6 +114,13 @@ class TheStudentRoom(scrapy.Spider):
     def parse3(self, response):
         """ This function parses a sample response. Some contracts are mingled
             with this docstring.
+
+            This is the THIRD and LAST LEVEL PARSE that extracts all the posts
+            present in a topic, and also repeats the procedure for every next
+            page if existent.
+
+            This function yields the desired results: raw_text post together
+            with the university name that it relates to.
 
             @url https://www.thestudentroom.co.uk/showthread.php?t=5152190
             @returns items 1
