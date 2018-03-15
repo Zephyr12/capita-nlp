@@ -134,20 +134,15 @@ class TheStudentRoom(scrapy.Spider):
             #Topic does not have more pages.
             pass
 
-        #Printing each post from the current page.
-        with open("the_student_room_posts.txt", "a") as myfile:
-            for post in response.css('.post-content .postcontent'):
-                post_text = post.css('.restore::text').extract()
-                print("---------------------------------------")
-                encoded_post = [x.encode('utf-8') for x in post_text]
-                encoded_post = "".join(encoded_post)
-                #print(response.meta["concerns"])
-                result = dict()
-                result['concerns'] = response.meta.get('concerns')
-                result['raw_text'] = encoded_post
-                yield result
-                # yield {"concerns:":response.meta.get('concerns'),
-                #        "raw_text:":encoded_post}
+        #Yielding each post from the current page.
+        for post in response.css('.post-content .postcontent'):
+            post_text = post.css('.restore::text').extract()
+            encoded_post = [x.encode('utf-8') for x in post_text]
+            encoded_post = "".join(encoded_post)
+            result = dict()
+            result['concerns'] = response.meta.get('concerns')
+            result['raw_text'] = encoded_post
+            yield result
 
 
 
