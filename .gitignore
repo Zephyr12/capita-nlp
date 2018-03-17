@@ -1,9 +1,8 @@
-__pycache__/
-data/*.pkcl
-data/*.csv
-!data/schools.csv
 results/*
 venv/*
 src/facebookenv/*
 .idea/*
-data/*.csv
+__pycache__/
+data/*
+!data/schools.csv
+.DS_STORE
