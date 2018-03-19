@@ -1,7 +1,9 @@
 import tweepy
 import queue
 import nltk
-from . import models, nlp, pipes
+import models
+import nlp
+import pipes
 import nltk.corpus
 import datetime
 

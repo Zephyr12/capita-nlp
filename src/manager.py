@@ -73,6 +73,8 @@ def retopic(db):
                 db.update_row("post", post["post_id"], {"topic_id": topic_id}, id_field="post_id")
 
 
+def data_pipeline(db):
+    pass
 
 def main():
     db = MyDB("dbname=capita user=amartya password=test")

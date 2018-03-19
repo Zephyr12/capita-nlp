@@ -3,7 +3,9 @@ from difflib import SequenceMatcher
 import nltk
 import re
 
-from . import models, pipes, sources
+import models
+import pipes
+import sources
 
 
 class sentiment:

@@ -15,6 +15,11 @@ db = psycopg2.connect(conf.db_path)
 cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 class CustomJsonEncoder(JSONEncoder):
+    '''
+        This class extends the builtin JSONEncoder class from flask to convert
+        python date time objects into unix timestamps for purposes of
+        interoperability with javascript
+    '''
 
     def default(self, obj):
         if isinstance(obj, datetime):
