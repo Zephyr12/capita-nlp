@@ -2,16 +2,40 @@
 This script scrapes the www.thestudentroom.co.uk forum for all the posts related to universities.
 """
 
+import pdb
 import scrapy
+import logging
+from scrapy.crawler import CrawlerProcess, Crawler
+import queue
 import re
 import json
+import threading
+
 
 
 class TheStudentRoom(scrapy.Spider):
     name = "student_room"
-
+    custom_settings = {
+           "LOG_LEVEL": logging.ERROR,
+           "ITEM_PIPLINES": {__name__+".TSRSource": 1}
+            }
     #First three subforums include 'Find your flatmates' threads at the end of universities list. Hence, we count them in order to be eliminated.
     subforums_counter = 0
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args, **kwargs)
+        self.buffer = queue.Queue()
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        try:
+            item = self.buffer.get(timeout=5)
+            self.buffer.task_done()
+            return item
+        except queue.Empty:
+            raise StopIteration()
 
     def start_requests(self):
         url = 'https://www.thestudentroom.co.uk/forumdisplay.php?f=307'
@@ -160,13 +184,19 @@ class TheStudentRoom(scrapy.Spider):
         #Yielding each post from the current page.
         for post in response.css('.post-content .postcontent'):
             post_text = post.css('.restore::text').extract()
-            encoded_post = [x.encode('utf-8') for x in post_text]
-            encoded_post = "".join(encoded_post)
+            encoded_post = "".join(post_text)
             result = dict()
             result['concerns'] = response.meta.get('concerns')
             result['raw_text'] = encoded_post
+            self.buffer.put({**result})
+            
             yield result
 
 
-
-
+def tsr_source():
+    tsr = TheStudentRoom()
+    crawler_process = CrawlerProcess()
+    crawler_process.crawl(tsr)
+    threading.Thread(target=lambda: crawler_process.start()).start()
+    for x in crawler_process.crawlers.__iter__().__next__().spider:
+        yield x
