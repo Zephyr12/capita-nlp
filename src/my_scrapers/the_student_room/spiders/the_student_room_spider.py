@@ -3,15 +3,17 @@ This script scrapes the www.thestudentroom.co.uk forum for all the posts related
 """
 
 import pdb
+import uuid
+from twisted.internet import reactor
+import datetime
 import scrapy
 import logging
 from scrapy.crawler import CrawlerProcess, Crawler, CrawlerRunner
+from scrapy.settings import Settings
 import queue
 import re
 import json
 import threading
-
-
 
 class TheStudentRoom(scrapy.Spider):
     name = "student_room"
@@ -22,9 +24,10 @@ class TheStudentRoom(scrapy.Spider):
     #First three subforums include 'Find your flatmates' threads at the end of universities list. Hence, we count them in order to be eliminated.
     subforums_counter = 0
     
-    def __init__(self,*args,**kwargs):
+    def __init__(self, allowed_schools={}, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.buffer = queue.Queue()
+        self.allowed_schools = allowed_schools
 
     def __iter__(self):
         return self
@@ -83,10 +86,10 @@ class TheStudentRoom(scrapy.Spider):
                 university_name = university_name.replace("\n", "").replace("  ","")
                 university_url = 'https://www.thestudentroom.co.uk/' + \
                                  university.css('a::attr(href)').extract_first()
-                if university_name not in self.mismatched_universities:
+                if university_name in self.allowed_schools:
                     request = response.follow(university_url, self.parse2)
                     #Stores the university name in the meta of the yielded request, in order to identify every post to its concerned university.
-                    request.meta["concerns"] = university_name
+                    request.meta["concerns"] = self.allowed_schools[university_name]
                     yield request
 
     def parse2(self, response):
@@ -182,21 +185,35 @@ class TheStudentRoom(scrapy.Spider):
             pass
 
         #Yielding each post from the current page.
-        for post in response.css('.post-content .postcontent'):
-            post_text = post.css('.restore::text').extract()
+        for post in response.css(".post"):#('.post-content .postcontent'):
+            timestamp = datetime.datetime.strptime(" ".join(post.css(".date-full .datestamp::text").extract() +  post.css(".date-full .timestamp::text").extract()), "%d-%m-%Y %H:%M")
+            post_text = post.css('.post-content .postcontent').css('.restore::text').extract()
             encoded_post = "".join(post_text)
             result = dict()
+            result["timestamp"] = timestamp
             result['concerns'] = response.meta.get('concerns')
             result['raw_text'] = encoded_post
+            result["id"] = uuid.uuid4().int
             self.buffer.put({**result})
             
             yield result
 
 
-def tsr_source():
-    tsr = TheStudentRoom
-    crawler_process = CrawlerRunner()
-    crawler_process.crawl(tsr)
-    for x in crawler_process.crawlers.__iter__().__next__().spider:
-        yield x
-    crawler_process.join()
+def tsr_source(allowed):
+    def src():
+        tsr = TheStudentRoom
+        crawler_process = Crawler(tsr, Settings())
+        crawler_process.crawl(allowed_schools=allowed)
+        
+        tp = reactor.getThreadPool()
+        tp.adjustPoolsize(maxthreads=4)
+        threading.Thread(target=lambda: reactor.run(installSignalHandlers=False)).start()
+     
+        #threading.Thread(target=crawler_process.start).start()
+
+        for x in crawler_process.spider:#.crawlers.__iter__().__next__().spider:
+            yield x
+    return src
+
+if __name__ == "__main__":
+    pass

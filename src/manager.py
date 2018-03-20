@@ -1,4 +1,5 @@
 import csv
+import conf
 import fb
 from my_scrapers.the_student_room.spiders.the_student_room_spider import tsr_source
 from sources import TweetStreamerSource
@@ -74,13 +75,13 @@ def retopic(db):
 
 
 def data_pipeline(db, schools=[], terms=[]):
-    out = Writer(print)
+    out = Writer(lambda x: db.add_row("post", x))
     #join = Join([out], lambda d: d["raw_text"], count=1)
     #ner_debug = Writer(lambda x: print("NER:", x))
     #ner = Processor([join, out], nlp.fuzzy_classifier(schools))
     sentiment = Processor([out], nlp.sentiment())
-    twitter = Source([out], TweetStreamerSource(terms))
-    tsr = Source([out], tsr_source)
+    twitter = Source([sentiment], TweetStreamerSource(terms))
+    tsr = Source([sentiment], tsr_source(conf.tsr_ner_shortcut))
 
 
 def main():
@@ -93,7 +94,7 @@ def main():
     elif sys.argv[1] == "retopic":
         retopic(db)
     elif sys.argv[1] == "data_pipeline":
-        data_pipeline(None, schools=models.get_school_list(location="Manchester"), terms=["school", "university", "college"])
+        data_pipeline(db)
     else:
         print("error invalid command")
 

@@ -1,6 +1,6 @@
 db_path = "dbname=capita user=amartya password=test"
 
-tsr_followed_schools = {
+tsr_followed_schools = [
     "Cranfield University",
     "Birkbeck, University of London",
     "Brunel University London",
@@ -21,7 +21,7 @@ tsr_followed_schools = {
     "University College, London",
     "University of West London",
     "University of Westminster",
-}
+]
 
 
 twitter_followed_schools = [

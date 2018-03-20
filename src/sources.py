@@ -1,4 +1,5 @@
 import tweepy
+import uuid
 import datetime
 import queue
 import nltk
@@ -8,11 +9,11 @@ import pipes
 import nltk.corpus
 import datetime
 import random
-
+import conf
 
 class TweetStreamerSource(tweepy.StreamListener):
     
-    def __init__(self, terms, num_days=7):
+    def __init__(self, terms=conf.twitter_followed_schools, num_days=conf.twitter_update_rate):
         self.buffer = queue.Queue()
         self.terms = terms
         self.num_days = num_days
@@ -46,7 +47,7 @@ class TweetStreamerSource(tweepy.StreamListener):
                     tweet_mode='extended',
                     lang="en").items(10000):
                 yield {
-                        "id": random.randint(0, 2**64),
+                        "id": uuid.uuid4().int,
                         "raw_text": result.full_text,
                         "concerns": term,
                         "timestamp": result.created_at
