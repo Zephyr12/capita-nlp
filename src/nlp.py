@@ -21,25 +21,18 @@ class sentiment:
 
 def fuzz(msg):
     fuzz = " ?".join("(?:" + ".?".join(c + "?" if i not in (0, len(w)-1) else c for i, c in enumerate(w)) + ")?" for w in nltk.word_tokenize(msg) )
-    print(fuzz)
     return fuzz
 
 def initialize(string):
-    return "".join(word[0] for (word, pos) in nltk.pos_tag(nltk.word_tokenize(string)) if pos[:2] == "NN" and word[0] != '\'')
+    return "".join(word[0] for word in nltk.word_tokenize(string) if word[0] != '\'')
 
 def initials_match(needle, haystack):
-    return 1 if initialize(needle) in haystack else 0
+    return 1 if initialize(needle) in nltk.word_tokenize(haystack) else 0
 
 def evaluate(cls, msg):
     found_text = "".join(re.findall(cls[1], msg["raw_text"]))
     ratio_score = SequenceMatcher(None, found_text, cls[0]).ratio() 
-    initials_score = initials_match(cls[0], msg["raw_text"])
-    if (initials_score > 0):
-        print("RATIO_SCORE:", ratio_score)
-        print("INITALS_SCORE:", initials_score)
-        print("FOR:", cls)
-        print("WITH:", found_text)
-        print()
+    initials_score = initials_match(cls[0], msg["raw_text"]) * 10
     return ratio_score + initials_score
 
 class fuzzy_classifier:

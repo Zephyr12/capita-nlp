@@ -68,8 +68,7 @@ def print_pretty_events(events):
 #new_events = json.loads(requests.get(next_page).text)
 #new = json.dumps(new_events, indent=4, sort_keys=True)
 
-#print(events)
-
+#print(events) 
 #events = data
 
 

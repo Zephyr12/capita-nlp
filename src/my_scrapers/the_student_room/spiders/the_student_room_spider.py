@@ -5,7 +5,7 @@ This script scrapes the www.thestudentroom.co.uk forum for all the posts related
 import pdb
 import scrapy
 import logging
-from scrapy.crawler import CrawlerProcess, Crawler
+from scrapy.crawler import CrawlerProcess, Crawler, CrawlerRunner
 import queue
 import re
 import json
@@ -194,9 +194,9 @@ class TheStudentRoom(scrapy.Spider):
 
 
 def tsr_source():
-    tsr = TheStudentRoom()
-    crawler_process = CrawlerProcess()
+    tsr = TheStudentRoom
+    crawler_process = CrawlerRunner()
     crawler_process.crawl(tsr)
-    threading.Thread(target=lambda: crawler_process.start()).start()
     for x in crawler_process.crawlers.__iter__().__next__().spider:
         yield x
+    crawler_process.join()

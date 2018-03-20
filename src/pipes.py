@@ -46,6 +46,7 @@ class Join:
         self.count = count
     
     def dispatch(self, item):
+        print(item)
         for sink in self.sinks:
             sink.queue({k: v for d in item for k, v in d.items()})
 

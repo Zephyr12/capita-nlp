@@ -1,12 +1,13 @@
 import csv
 import fb
+from my_scrapers.the_student_room.spiders.the_student_room_spider import tsr_source
+from sources import TweetStreamerSource
 import nlp
 import models
 from db import MyDB
 import sys
-from pipes import Source, Processor, Writer
+from pipes import Source, Processor, Writer, Join
 import psycopg2.extras
-
 
 def recreate_tables(db):
     db.drop_table("schools")
@@ -43,7 +44,6 @@ def recreate_tables(db):
                 }
             )
 
-
 def load_schools_table(db):
     data_table = csv.DictReader(open("data/schools.csv"))
     for row in data_table:
@@ -73,19 +73,27 @@ def retopic(db):
                 db.update_row("post", post["post_id"], {"topic_id": topic_id}, id_field="post_id")
 
 
-def data_pipeline(db):
-    pass
+def data_pipeline(db, schools=[], terms=[]):
+    out = Writer(print)
+    #join = Join([out], lambda d: d["raw_text"], count=1)
+    #ner_debug = Writer(lambda x: print("NER:", x))
+    #ner = Processor([join, out], nlp.fuzzy_classifier(schools))
+    sentiment = Processor([out], nlp.sentiment())
+    twitter = Source([out], TweetStreamerSource(terms))
+    tsr = Source([out], tsr_source)
+
 
 def main():
     db = MyDB("dbname=capita user=amartya password=test")
     if sys.argv[1] == "load_schools":
         load_schools_table(db)
-    elif sys.argv[1] == "recreate_tables":
-        recreate_tables(db)
+    elif sys.argv[1] == "recreate_tables": recreate_tables(db)
     elif sys.argv[1] == "load_fb":
         load_fb_posts(db)
     elif sys.argv[1] == "retopic":
         retopic(db)
+    elif sys.argv[1] == "data_pipeline":
+        data_pipeline(None, schools=models.get_school_list(location="Manchester"), terms=["school", "university", "college"])
     else:
         print("error invalid command")
 
