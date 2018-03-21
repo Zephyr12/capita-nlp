@@ -2,7 +2,7 @@
 
 
 <html>
-	<head>
+<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,64 +33,95 @@
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
-	</head>
-	<body>
-		
-	<div class="gtco-loader"></div>
-	
-	<div id="page">
-	<nav class="gtco-nav" role="navigation">
-		<div class="gtco-container">
-			<div class="row">
-				<div class="col-md-12 text-center menu-1">
-					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li><a href="requirements.html">Requirements</a></li>
-						<li><a href="research.html">Research</a></li>
-						<li><a href="hci.html">HCI</a></li>
-						<li class="active"><a href="design.html">Design</a></li>
-						<li><a href="testing.html">Testing</a></li>
-						<li><a href="evaluation.html">Evaluation</a></li>
-						<li><a href="management.html">Management</a></li>
-					</ul>
-				</div>
-			</div>
-			
-		</div>
-	</nav>
+</head>
+<body>
 
-	<header id="gtco-header" class="gtco-cover gtco-cover-xs" role="banner" style="background-image:url(images/img_bg_1.jpg);">
-		<div class="overlay"></div>
-		<div class="gtco-container">
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<div class="display-t">
-						<div class="display-tc">
-							
+	<div class="gtco-loader"></div>
+
+	<div id="page">
+		<nav class="gtco-nav" role="navigation">
+			<div class="gtco-container">
+				<div class="row">
+					<div class="col-md-12 text-center menu-1">
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="requirements.html">Requirements</a></li>
+							<li><a href="research.html">Research</a></li>
+							<li><a href="hci.html">HCI</a></li>
+							<li class="active"><a href="design.html">Design</a></li>
+							<li><a href="testing.html">Testing</a></li>
+							<li><a href="evaluation.html">Evaluation</a></li>
+							<li><a href="management.html">Management</a></li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</nav>
+
+		<header id="gtco-header" class="gtco-cover gtco-cover-xs" role="banner" style="background-image:url(images/img_bg_1.jpg);">
+			<div class="overlay"></div>
+			<div class="gtco-container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 text-center">
+						<div class="display-t">
+							<div class="display-tc">
+								<h1>System Design</h1>
+								<p>
+									This section presents the overall design of our system, including the system architecture diagram,
+									what design patterns were used in order to achieve the key functionalities and how those were implemented.
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</header>
+		</header>
 
-	<!-- <footer id="gtco-footer" role="contentinfo">
-		<div class="gtco-container">
-			<div class="row copyright">
-				<div class="col-md-12">
-					<p class="pull-left">
-						<small class="block">&copy; lalala. All Rights Reserved.</small> 
-					</p>
+		<div id="gtco-cover">
+			<div class="gtco-container">
+				<div class="row animate-box">
+					<div class="col-md-8 col-md-offset-2 text-center gtco-heading animate-box">
+						<br><br><br><br>
+						<h2>System Architecture Diagram</h2>
+					</div>
+					<div class="row animate-box ">
+						<img class="col-md-12 col-md-offset-0 text-center" src="images/system_architecture_diagram.png">
+					</div>
+					<div>
+						<h2>Data Sources: Twitter And The Student Forum</h2>
+						<p align="justify">
+							The system requires a big amount of data to analyse, and the task of collecting
+							this data is achieved by the data pipelines. For the current stage, we are using two separate data sources:
+							Twitter posts and Forum posts from TSR (The Student Room).
+						</p>
+						<p align="justify">
+							The system uses a Python Tweepy to "generate" (yield) twitter posts that are related to subjects such as scool,
+							university or any educational institution. The source starts providing posts in real-time to the system as soon as
+							they are posted.
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
-	</footer> -->
-</div>
+
+		<footer id="gtco-footer" role="contentinfo">
+			<div class="gtco-container">
+				<div class="row copyright">
+					<div class="col-md-12">
+						<p class="pull-left">
+							<small class="block">&copy; lalala. All Rights Reserved.</small>
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
 
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 	</div>
-	
+
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
 	<!-- jQuery Easing -->
@@ -109,6 +140,5 @@
 	<!-- Main -->
 	<script src="js/main.js"></script>
 
-	</body>
+</body>
 </html>
-
