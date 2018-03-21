@@ -146,13 +146,13 @@
 								<b><h3><font color="white">WHY FACEBOOK API?</font></h3></b>
 								<p>
 									In order to create a Facebook pipeline, we had a few options: either using the
-									<a href="http://facebook-sdk.readthedocs.io/en/latest/index.html">Facebook provided SDK for Python</a>,
+									<a href="http://facebook-sdk.readthedocs.io/en/latest/index.html">Facebook provided SDK for Python</a>[1],
 									or use other libraries that try to make it easier for the developers to work with the API. We decided that using
 									other libraries would make our initial developing process easy (achieving a working Facebook pipeline), but it would
 									come with risks that we could not take such as unwanted and unknown specific bugs inside that library, as they are
 									not meant to be used for scraping. Because our system is so complex and the Data Pipeline component is the first
 									component of it, we thought that using the Facebook provided API is the best solution, despite it's poor documentation
-									and deprecated functionalities in time[1].
+									and deprecated functionalities in time[2].
 								</p>
 								<br>
 								<b><h3><font color="white">RAISED ISSUES</font></h3></b>
@@ -184,7 +184,7 @@
 										<p>
 											In order to store all the posts relating the Universities in UK that are found on The Student Room forum,
 											we had two options:
-											<a href="https://scrapy.org/">Scrapy</a>
+											<a href="https://scrapy.org/">Scrapy</a>[3]
 											or
 											<a href="https://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a>.
 										</p>
@@ -236,7 +236,7 @@
 											<h2 id="twitter-pipeline">Twitter Data Pipeline</h2>
 											<b><h3><font color="white">WHY TWEEPY?</font></h3></b>
 											<p>
-												<a href="http://tweepy.readthedocs.io/en/v3.6.0/">tweepy</a> is good
+												<a href="http://tweepy.readthedocs.io/en/v3.6.0/">tweepy</a>[4] is good
 											</p>
 
 
@@ -282,7 +282,7 @@
 												<h2 id="gensim">GENSIM</h2>
 												<b><h3><font color="white">WHY GENSIM?</font></h3></b>
 												<p>
-													<a href="https://radimrehurek.com/gensim/">Gensim</a> is a free Python library designed for topic
+													<a href="https://radimrehurek.com/gensim/">Gensim</a>[5] is a free Python library designed for topic
 													modelling. It presents a lot of advantages and seemed to be the most accessible technology
 													for our purpose at this level. Some of the useful advantages for our system are:
 													<ul>
@@ -323,19 +323,18 @@
 												<h2 id="nltk">NLTK</h2>
 												<b><h3><font color="white">WHY NLTK?</font></h3></b>
 												<p>
-													<a href="https://www.nltk.org/">nltk</a> is good
+													Our options for language processing were <a href="https://spacy.io/">spaCy</a> and
+													<a href="https://www.nltk.org/">nltk</a>[6]. The difference between these two technologies
+													is that spaCy represents an Industrial-Strenght Natural Language Processing while NLTK is
+													designed to be a good starting point in this area (students, researchers).
 												</p>
-
-
+												<p>
+													Moreover, spaCy is faster at Word Tokenization and Part-Of-Speech Tagging, while NLTK is
+													faster at Sentence Tokenization - the last one being our system scope. Thus, we considered
+													that in our case it is would be the best decision to chose NLTK over spaCy as it provides
+													more support and is faster in the area that are mostly concerned about.
+												</p>
 												<br>
-												<b><h3><font color="white">RAISED ISSUES</font></h3></b>
-												<p>
-													never
-												</p>
-												<b><h3><font color="white">SOLUTION</font></h3></b>
-												<p>
-													xDxDxD
-												</p>
 											</div>
 										</div>
 									</div>
@@ -393,9 +392,12 @@
 											<p class="pull-left">
 												<h2>References:</h2>
 												<font color="black">
-												<li>[1] Facebook Documentation Changelog (2018). Available at: https://developers.facebook.com/docs/graph-api/changelog/ (Accessed: 20 March 2018)</li>
-												<li>[2]</li>
-												<li>[3]</li>
+												<li>[1] Facebook SDK for Python Documentation (Version 2.0.0). Available at: http://facebook-sdk.readthedocs.io/en/latest/index.html (Acceessed: 22 March 2018)</li>
+												<li>[2] Facebook Documentation Changelog (2018). Available at: https://developers.facebook.com/docs/graph-api/changelog/ (Accessed: 20 March 2018)</li>
+												<li>[3] Scrapy Documentation (Version 1.5). Available at: https://docs.scrapy.org/en/latest/ (Accessed: 22 March 2018)</li>
+												<li>[4] Tweepy Documentation (Version 3.6.0). Available at: http://tweepy.readthedocs.io/en/v3.6.0/ (Accessed: 22 March 2018)</li>
+												<li>[5] Gensim API References (Mar 2018). Available at: https://radimrehurek.com/gensim/apiref.html (Accessed: 22 March 2018)</li>
+												<li>[6] NLTK Package Documentation (Version 3.2.4). Available at: https://www.nltk.org/api/nltk.html (Accessed: 22 March 2018)</li>
 											</font>
 											</p>1
 										</div>
