@@ -447,6 +447,67 @@
 				</div>
 			</div>
 
+			<div id="gtco-cover">
+				<div class="gtco-container">
+					<div class="row animate-box">
+						<div class="col-md-8 col-md-offset-2 text-center gtco-heading ">
+							<br><br><br><br>
+							<h2>System Manager</h2>
+							<p>Responsible for managing the system by merging the components. As you can see from the
+								main function, it makes use of other suggestive methods that will handle the
+								key processes: <code>recreate_tables(db, drop=False)</code>,
+								<code>load_schools_table(db)</code>,
+								<code>load_fb_posts(db)</code>,
+								<code>retopic(db)</code> and <code>data_pipeline(db, schools=[], terms=[])</code>.
+							</p>
+						</div>
+
+					</div>
+					<pre class="prettyprint"><code>
+	def main():
+	    db = MyDB("dbname=capita user=*** password=***")
+	    if sys.argv[1] == "load_schools":
+	        load_schools_table(db)
+	    elif sys.argv[1] == "recreate_tables":
+	        recreate_tables(db)
+	    elif sys.argv[1] == "load_fb":
+	        load_fb_posts(db)
+	    elif sys.argv[1] == "retopic":
+	        retopic(db)
+	    elif sys.argv[1] == "data_pipeline":
+	        data_pipeline(db)
+	    else:
+	        print("error invalid command")
+
+					</code></pre>
+				</div>
+			</div>
+
+
+						<div id="gtco-cover">
+							<div class="gtco-container">
+								<div class="row animate-box">
+									<div class="col-md-8 col-md-offset-2 text-center gtco-heading ">
+										<br><br><br><br>
+										<h2>Natural Language Processing</h2>
+										<p>Key component for evaluating the sentiment of a raw piece of text, using the <mark>NLTK</mark> library.
+											It's main function is found in the <code class="prettyprint">class sentiment:</code> altogether with
+											its functions: <code>fuzz(msg)</code>,<code>initialize(string)</code> and <code>initials_match(needle, haystack)</code>.
+										</p>
+									</div>
+
+								</div>
+								<pre class="prettyprint"><code>
+	def evaluate(cls, msg):
+	    found_text = "".join(re.findall(cls[1], msg["raw_text"]))
+	    ratio_score = SequenceMatcher(None, found_text, cls[0]).ratio()
+	    initials_score = initials_match(cls[0], msg["raw_text"]) * 10
+	    return ratio_score + initials_score
+
+								</code></pre>
+							</div>
+						</div>
+
 
 			<footer id="gtco-footer" role="contentinfo">
 				<div class="gtco-container">
