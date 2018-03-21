@@ -13,7 +13,7 @@ export default class App extends React.Component {
         <Router>
         <div>
         <Route path='/' component = {Search}/>
-        <Route path='/schoolDetails' component ={SchoolDetails}/>
+        <Route path='/:establishmentName' component ={SchoolDetails}/>
         </div>
         </Router>
     );

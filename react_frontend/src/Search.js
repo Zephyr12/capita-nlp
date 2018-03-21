@@ -49,7 +49,6 @@ class Search extends Component {
       query: '',
       suggested_schools: {"count": 0, "data": []},
       data: [],
-      showHello: false,
       error: false
     });
   };

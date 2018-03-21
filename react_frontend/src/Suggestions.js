@@ -7,7 +7,7 @@ import SchoolDetails from './schoolDetails'
 /*expect a state named suggested_schools*/
 const Suggestions = (state) => {
   const options = state.suggested_schools.data.map(r =>
-  	<p> <Link to='schoolDetails'>{r.establishment_name}</Link></p>)
+  	<p> <Link to={`${r.establishment_name}`}>{r.establishment_name}</Link></p>)
   return <ol>{options}</ol>
 }
 
