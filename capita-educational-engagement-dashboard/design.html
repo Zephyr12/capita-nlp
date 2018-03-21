@@ -317,7 +317,7 @@
 						<h2 id="restful-api">RESTful API</h2>
 						<p align="justify">
 							This represents an Architectural Design Style that relates to web applications. The system follows this
-							Design Pattern for the process of developing the Front End. REST (Representational State Transfer) recommends 
+							Design Pattern for the process of developing the Front End. REST (Representational State Transfer) recommends
 							the use of HTML as it was originally pictured for future use.
 						</p>
 						<p>
@@ -337,40 +337,153 @@
 			</div>
 		</div>
 
-		<footer id="gtco-footer" role="contentinfo">
+		<header id="gtco-header" class="gtco-cover gtco-cover-xs" role="banner" style="background-image:url(images/img_bg_1.jpg);">
+			<div class="overlay"></div>
 			<div class="gtco-container">
-				<div class="row copyright">
-					<div class="col-md-12">
-						<p class="pull-left">
-							<small class="block">&copy; lalala. All Rights Reserved.</small>
-						</p>
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 text-center">
+						<div class="display-t">
+							<div class="display-tc">
+								<h1>Implementation of Key Functionalities</h1>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</footer>
-	</div>
+		</header>
 
-	<div class="gototop js-top">
-		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
-	</div>
+		<div id="gtco-cover">
+			<div class="gtco-container">
+				<div class="row animate-box">
+					<div class="col-md-8 col-md-offset-2 text-center gtco-heading animate-box">
+						<br><br><br><br>
+						<h2>DataBase</h2>
+						<p>For generating a database, a table is created that will support several other methods such as <code>add_row()</code>,
+							<code>detele_row()</code>,<code>update_row()</code>,<code>delete_row_by_id()</code> and <code>drop_table()</code>.</p>
 
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-	<!-- jQuery Easing -->
-	<script src="js/jquery.easing.1.3.js"></script>
-	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
-	<!-- Carousel -->
-	<script src="js/owl.carousel.min.js"></script>
-	<!-- countTo -->
-	<script src="js/jquery.countTo.js"></script>
-	<!-- Magnific Popup -->
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/magnific-popup-options.js"></script>
-	<!-- Main -->
-	<script src="js/main.js"></script>
 
-</body>
-</html>
+						</div>
+					</div>
+					<pre class="prettyprint"><code>
+    def create_table(self, table_name, key_value_pairs):
+        sql_create_a_table = f"CREATE TABLE IF NOT EXISTS {table_name}(\n"
+        for key, value in key_value_pairs.items():
+            sql_create_a_table += f"{key} {value},\n"
+        sql_create_a_table = sql_create_a_table[:-2] #delete the last comma
+        sql_create_a_table += "\n);"
+
+        try:
+            #print(sql_create_a_table)
+            c = self.conn.cursor()
+            c.execute(sql_create_a_table)
+            self.conn.commit()
+            c.close()
+        except Exception as e:
+            print(e)
+            raise
+
+    def drop_table(self, table_name):
+        sql_drop_table = f"DROP TABLE IF EXISTS {table_name} CASCADE;"
+        try:
+            c = self.conn.cursor()
+            c.execute(sql_drop_table)
+            self.conn.commit()
+            c.close()
+        except Exception as e:
+            print(e)
+            raise
+
+					</code></pre>
+				</div>
+			</div>
+
+			<div id="gtco-cover">
+				<div class="gtco-container">
+					<div class="row animate-box">
+						<div class="col-md-8 col-md-offset-2 text-center gtco-heading ">
+							<br><br><br><br>
+							<h2>Facebook Source</h2>
+							<p>In order to obtain the Facebook data, the core function is <code>run()</code> which will be called in order
+								to generate/yield event descriptions one-by-one. The function makes use of other core functions in order:
+								<code>get_school_events(self, educational_institution, since)</code>,
+								<code>get_event_details(self, since, educational_institution)</code>,
+								<code>add_event_details_to_cache_file(self, description, location, name, since, educational_institution)</code>,
+								<code>get_event_location(self, event)</code>
+								and <code>iterate_throught_pages(self, since, educational_institution)</code>.
+							</p>
+						</div>
+
+					</div>
+					<pre class="prettyprint"><code>
+
+    def run(self):
+        """
+        Main function that runs the entire script.
+        It yields all the events one by one, providing relevant information such as event name,
+        location and description, but also the search query under which it was found i.g. the institution name.
+        Running this function daily produces new results. It uses the since parameter in order to detect if a similar
+        query was already made in the same day. If a similar query was already made the same day, then it returns the
+        results stored in cache.
+        """
+
+        since = self.get_todays_date()
+
+        #Try get results from cache file if existent.
+        try:
+            yield from self.yield_rows_from_cache_file(since)
+
+        #Else, start querying for events.
+        except IOError as e:
+            self.create_cache_header(since)
+            for school in self.schools:
+                print("Searching events for: " + school)
+                self.get_school_events(school, since)
+                self.events = self.data
+                for i in self.iterate_throught_pages(since, school):
+                    # print(i)
+                    yield i
+
+					</code></pre>
+				</div>
+			</div>
+
+
+			<footer id="gtco-footer" role="contentinfo">
+				<div class="gtco-container">
+					<div class="row copyright">
+						<div class="col-md-12">
+							<p class="pull-left">
+								<small class="block">&copy; lalala. All Rights Reserved.</small>
+							</p>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+
+		<div class="gototop js-top">
+			<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+		</div>
+
+		<!-- jQuery -->
+		<script src="js/jquery.min.js"></script>
+		<!-- jQuery Easing -->
+		<script src="js/jquery.easing.1.3.js"></script>
+		<!-- Bootstrap -->
+		<script src="js/bootstrap.min.js"></script>
+		<!-- Waypoints -->
+		<script src="js/jquery.waypoints.min.js"></script>
+		<!-- Carousel -->
+		<script src="js/owl.carousel.min.js"></script>
+		<!-- countTo -->
+		<script src="js/jquery.countTo.js"></script>
+		<!-- Magnific Popup -->
+		<script src="js/jquery.magnific-popup.min.js"></script>
+		<script src="js/magnific-popup-options.js"></script>
+		<!-- Main -->
+		<script src="js/main.js"></script>
+
+		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+	</body>
+	</html>
