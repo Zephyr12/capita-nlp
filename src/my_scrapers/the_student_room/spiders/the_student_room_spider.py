@@ -191,9 +191,9 @@ class TheStudentRoom(scrapy.Spider):
             encoded_post = "".join(post_text)
             result = dict()
             result["timestamp"] = timestamp
-            result['concerns'] = response.meta.get('concerns')
+            result['school_id'] = response.meta.get('concerns')
             result['raw_text'] = encoded_post
-            result["id"] = uuid.uuid4().int
+            result["post_id"] = uuid.uuid4().int % (2 ** 32)
             self.buffer.put({**result})
             
             yield result

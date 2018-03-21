@@ -59,8 +59,11 @@ class MyDB:
         try:
             #print(sql)
             c = self.conn.cursor()
-            c.execute(sql, list(key_value_pairs.values()))
-            self.conn.commit()
+            try:
+                c.execute(sql, list(key_value_pairs.values()))
+                self.conn.commit()
+            except:
+                self.conn.rollback()
             if returning:
                 return c.fetchall()
             else:

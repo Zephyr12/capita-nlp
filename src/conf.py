@@ -47,6 +47,6 @@ twitter_followed_schools = [
     "University of Westminster",
 ]
 
-tsr_ner_shortcut = {k: v for (k,v) in zip(tsr_followed_schools, tsr_followed_schools)}
+tsr_ner_shortcut = {k: v for (k,v) in zip(tsr_followed_schools, twitter_followed_schools)}
 
 twitter_update_rate = 1 # days

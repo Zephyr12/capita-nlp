@@ -47,9 +47,9 @@ class TweetStreamerSource(tweepy.StreamListener):
                     tweet_mode='extended',
                     lang="en").items(10000):
                 yield {
-                        "id": uuid.uuid4().int,
+                        "post_id": uuid.uuid4().int % (2**32),
                         "raw_text": result.full_text,
-                        "concerns": term,
+                        "school_id": term,
                         "timestamp": result.created_at
                    }
         #
