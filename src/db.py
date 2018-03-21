@@ -4,15 +4,15 @@ import psycopg2
 class MyDB:
     def __init__(self, db_path):
         try:
-            self.conn = psycopg2.connect(db_path)#, check_same_thread = False)
+            self.conn = psycopg2.connect(db_path)
         except Exception as e:
             print(e)
             raise
 
 
-    """ create a table from the create_table_sql statement
-            :param create_table_sql: a CREATE TABLE statement
-            :return:"""
+    """ method create_table creates a table using CREATE TABLE IF NOT EXISTS sql statement
+        parameters: table_name and key_value pairs(column name and type)
+            """
     def create_table(self, table_name, key_value_pairs):
         sql_create_a_table = f"CREATE TABLE IF NOT EXISTS {table_name}(\n"
         for key, value in key_value_pairs.items():
@@ -29,7 +29,10 @@ class MyDB:
         except Exception as e:
             print(e)
             raise
-
+            
+            
+    """ method drop_table drops a table using DROP TABLE IF EXISTS sql statement
+        parameters: table_name"""
     def drop_table(self, table_name):
         sql_drop_table = f"DROP TABLE IF EXISTS {table_name};"
         try:
@@ -43,9 +46,8 @@ class MyDB:
             raise
 
 
-    """ Add a new row into the table
-    param row:
-    return: row id"""
+    """ method add_row adds a row into a table using INSERT INTO sql statement
+        parameters: table_name and key_value_pairs(column name and value)"""
     def add_row(self, table_name, key_value_pairs):
         sql = f"INSERT INTO {table_name}("
         for key, value in key_value_pairs.items():
@@ -69,9 +71,8 @@ class MyDB:
         #return c.lastrowid
 
 
-    """Delete a task by task id
-    param id: id of the task
-    return:"""
+    """method delete_row_by_id deletes a row from the table using DELE FROM sql statement
+        parameters: table_name and table_id(row id)"""
     def delete_row_by_id(self, table_name, table_id):
         sql = f"DELETE FROM {table_name} WHERE id=%s;"
         try:
