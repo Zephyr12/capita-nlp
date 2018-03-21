@@ -248,20 +248,22 @@
 			</div>
 		</div>
 
-		<div id="gtco-products" class="gtco-section">
-			<div class="gtco-container">
-				<div class="row">
-					<div class="col-md-12 text-center gtco-heading animate-box">
-						<h2 id="callback-programming">Callback Programming</h2>
-						<p align="justify">
-							This Design Pattern is followed by using the Scrapy Framework. The scraping cycle begins by generating requests
-							that crawl an initial URL and also specifying a callback function that will be called with the response from these
-							requests (start_requests() method and parse() callback method).
-						</p>
-						<p align="justify">
-							The callback function parses each response and then it can return an item or another request object that will
-							be handled by another specified callback function.
-						</p>
+		<div  id="callback-programming">
+			<div id="gtco-products" class="gtco-section">
+				<div class="gtco-container">
+					<div class="row">
+						<div class="col-md-12 text-center gtco-heading animate-box">
+							<h2>Callback Programming</h2>
+							<p align="justify">
+								This Design Pattern is followed by using the Scrapy Framework. The scraping cycle begins by generating requests
+								that crawl an initial URL and also specifying a callback function that will be called with the response from these
+								requests (start_requests() method and parse() callback method).
+							</p>
+							<p align="justify">
+								The callback function parses each response and then it can return an item or another request object that will
+								be handled by another specified callback function.
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -278,9 +280,9 @@
 							behind the scenes.
 						</p>
 						<p align="justify">
-							The proxy generally uses functions defined in the background, but also adds functionalities. This is especially useful
-							for our system, as we are constantly merging components, but also make use of specific functions defined in other
-							classes.
+							The proxy generally uses functions defined in the background, but also adds functionalities at the same time.
+							This is especially useful for our system, as we are constantly merging components, but also make use of specific
+							functions defined in other classes.
 						</p>
 					</div>
 				</div>
@@ -293,7 +295,15 @@
 					<div class="col-md-12 text-center gtco-heading animate-box">
 						<h2 id="template-method">Template Method</h2>
 						<p align="justify">
-							Awsome.
+							Template Method was followed for the Twitter Source components. It defines the program skeleton of the algorithm in
+							operation, allowing the user to redefine some algorithm steps without changing its skeleton.
+						</p>
+						<p align="justify">
+							In this way, one more steps of an algorithm can be overridden by subclasses to allow the implementation of
+							different methods as desired, but without changing the base methods that needs to be followed. Hence,
+							it allows to store the main required algorithm steps into an initial class(the base ones that do not
+							need to be changed), while only specific methods for the purpose of the system can be implemented in
+							other subclasses.
 						</p>
 					</div>
 				</div>
@@ -306,7 +316,21 @@
 					<div class="col-md-12 text-center gtco-heading animate-box">
 						<h2 id="restful-api">RESTful API</h2>
 						<p align="justify">
-							Awsome.
+							This represents an Architectural Design Style that relates to web applications. The system follows this
+							Design Pattern for the process of developing the Front End. REST (Representational State Transfer) recommends 
+							the use of HTML as it was originally pictured for future use.
+						</p>
+						<p>
+							As a result, 'lookup' methods use GET requests, PUT requests are used for 'mutation', POST requests for
+							'creation' and DELETE requests for 'deletion'. Following this pattern the system separates the client from
+							the server, improving the portability of the interface to other types of platforms, increasing the scalability
+							of the project for future development. It also allows our development team to work in parallel, as the team
+							can make changes to the backend, providing that the data sent from each request is sent correctly.
+						</p>
+						<p align="justify">
+							Another immediate advantage of adopting RESTful API architecture is also the fact that it is language
+							independent, meaning that it can use a variety of languages for the servers, except the language for
+							data exchange.
 						</p>
 					</div>
 				</div>
