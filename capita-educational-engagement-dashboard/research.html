@@ -261,7 +261,13 @@
 											<br><br><br><br>
 											<h2>Data Transformation and Feature Extraction</h2>
 											<p>
-												<a href="#gensim">gensim</a> for topic modeling + <a href="#nltk">nltk</a> for sentiment anal. and ner
+												These technologies are related to the <b>meaning</b> of the data that is fetched by the data mining
+												pipeline. In other words, these are responsible for producing the insight about the data that
+												we are collecting.
+											</p>
+											<p>
+												We used <a href="#gensim">gensim</a> for topic modelling and
+												<a href="#nltk">nltk</a> for Named-Entity Recogniser(NER) and Sentiment Analysis.
 											</p>
 
 											</div>
@@ -276,18 +282,34 @@
 												<h2 id="gensim">GENSIM</h2>
 												<b><h3><font color="white">WHY GENSIM?</font></h3></b>
 												<p>
-													<a href="https://radimrehurek.com/gensim/">gensim</a> is good
+													<a href="https://radimrehurek.com/gensim/">Gensim</a> is a free Python library designed for topic
+													modelling. It presents a lot of advantages and seemed to be the most accessible technology
+													for our purpose at this level. Some of the useful advantages for our system are:
+													<ul>
+														<li>Scalability: Gensim can process large, web-scale corpora, using incremental online training
+															algorithms. There is no need for the whole input corpus to reside fully in RAM at any one time.
+														</li>
+															<li>It is Platform Independent: Being pure Python, gensim runs on Linux, Windows and OS X,
+																as well as any other platform that supports Python and NumPy.
+															</li>
+															<li>
+																Provides efficient implementations: The core algorithms in gensim use highly
+																optimized math routines. Gensim also contains a distributed version of several algorithms,
+																intended to speed up processing and retrieval on machine clusters.
+															</li>
+													</ul>
 												</p>
 
 
 												<br>
 												<b><h3><font color="white">RAISED ISSUES</font></h3></b>
 												<p>
-													never
+													Because of the complexity of this advanced process, gensim lda models needed a lot of time
+													and data for training - resources that were not available for the scale of our system.
 												</p>
 												<b><h3><font color="white">SOLUTION</font></h3></b>
 												<p>
-													xDxDxD
+													We used Google's pre-trained word2vec corpus in order to achieve the necessary output from our system.
 												</p>
 											</div>
 										</div>
