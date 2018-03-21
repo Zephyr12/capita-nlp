@@ -5,3 +5,4 @@ src/facebookenv/*
 __pycache__/
 .idea/*
 data/*.csv
+react_frontend/node_modules
