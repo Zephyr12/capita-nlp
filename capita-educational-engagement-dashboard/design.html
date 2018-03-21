@@ -182,7 +182,7 @@
 										<a href="#thread-pool">Thread Pool</a>
 									</li>
 									<li>
-										<a href="#inversion-of-control">Inversion of Control</a>
+										<a href="#callback-programming">Callback Programming</a>
 									</li>
 									<li>
 										<a href="#proxy-pattern">Proxy Pattern</a>
@@ -252,9 +252,15 @@
 			<div class="gtco-container">
 				<div class="row">
 					<div class="col-md-12 text-center gtco-heading animate-box">
-						<h2 id="inversion-of-control">Inversion of Control</h2>
+						<h2 id="callback-programming">Callback Programming</h2>
 						<p align="justify">
-							Awsome.
+							This Design Pattern is followed by using the Scrapy Framework. The scraping cycle begins by generating requests
+							that crawl an initial URL and also specifying a callback function that will be called with the response from these
+							requests (start_requests() method and parse() callback method).
+						</p>
+						<p align="justify">
+							The callback function parses each response and then it can return an item or another request object that will
+							be handled by another specified callback function.
 						</p>
 					</div>
 				</div>
@@ -267,7 +273,14 @@
 					<div class="col-md-12 text-center gtco-heading animate-box">
 						<h2 id="proxy-pattern">Proxy Pattern</h2>
 						<p align="justify">
-							Awsome.
+							The proxies are classes in our system that function as interfaces. These are being used for accessing resources that are
+							unnecessary expensive to duplicate. The proxy becomes a wrapper for a accessing useful functions that are defined
+							behind the scenes.
+						</p>
+						<p align="justify">
+							The proxy generally uses functions defined in the background, but also adds functionalities. This is especially useful
+							for our system, as we are constantly merging components, but also make use of specific functions defined in other
+							classes.
 						</p>
 					</div>
 				</div>
