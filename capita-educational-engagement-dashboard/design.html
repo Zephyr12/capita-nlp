@@ -447,6 +447,58 @@
 				</div>
 			</div>
 
+
+			<div id="gtco-cover">
+				<div class="gtco-container">
+					<div class="row animate-box">
+						<div class="col-md-8 col-md-offset-2 text-center gtco-heading ">
+							<br><br><br><br>
+							<h2>Scraping THE STUDENT ROOM</h2>
+							<p>
+								To obtain the desired posts from The Student Room related to universities, the component relies
+								on three levels of parsing. The first level being responsible for heading to the topics of each
+								university, second level heads to the content of each topic and paginates through the topic pages
+								for each university and the last level of parsing -
+								<code class="prettyprint"> def parse3(self, response):</code> - which is presented below is the one that
+								yields each parsed post, together with the concerned university which was transferred from the
+								first parsing level in the metadata of each response.
+							</p>
+						</div>
+
+					</div>
+					<pre class="prettyprint"><code>
+def parse3(self, response):
+	'''
+	SPIDER CONTRACTS
+	'''
+        #Pagination to move to next page of each topic.
+        try:
+            next_page = response.css('ul.pager .pager-ff::attr(href)').extract_first()
+            next_page_url = 'https://www.thestudentroom.co.uk/' + next_page
+            request = response.follow(next_page_url, self.parse3)
+            request.meta["concerns"] = response.meta.get('concerns')
+            yield request
+        except TypeError:
+            #Topic does not have more pages.
+            pass
+
+        #Yielding each post from the current page.
+        for post in response.css('.post-content .postcontent'):
+            post_text = post.css('.restore::text').extract()
+            encoded_post = [x.encode('utf-8') for x in post_text]
+            encoded_post = "".join(encoded_post)
+            result = dict()
+            result['concerns'] = response.meta.get('concerns')
+            result['raw_text'] = encoded_post
+            yield result
+
+
+					</code></pre>
+				</div>
+			</div>
+
+
+
 			<div id="gtco-cover">
 				<div class="gtco-container">
 					<div class="row animate-box">
@@ -507,6 +559,48 @@
 								</code></pre>
 							</div>
 						</div>
+
+						<div id="gtco-cover">
+							<div class="gtco-container">
+								<div class="row animate-box">
+									<div class="col-md-8 col-md-offset-2 text-center gtco-heading ">
+										<br><br><br><br>
+										<h2>GENSIM Topic Modeling</h2>
+										<p>The key functionality of topic modeling is achieved using the <mark>GENSIM</mark> library.
+											This feature relies on two main methods:
+											<code class="prettyprint">def x2vec(sent, tokenizer=nltk.word_tokenize, model=word2vec):</code> and
+											<code class="prettyprint">def doc2vec(doc):</code>.
+										</p>
+									</div>
+
+								</div>
+								<pre class="prettyprint"><code>
+	def x2vec(sent, tokenizer=nltk.word_tokenize, model=word2vec):
+	    words = list(
+	            map(
+	                np.concatenate,
+	                pairwise(
+	                    map(
+	                        lambda x: word2vec[x],
+	                        filter(
+	                            lambda w: w in word2vec,
+	                            tokenizer(sent)
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	    words = [word2vec[word] for word in nltk.word_tokenize(sent) if word in word2vec]
+	    return sum(words) / (len(words) + 1)
+
+	def doc2vec(doc):
+	    sentence_vectors =list(map(x2vec, nltk.sent_tokenize(doc.lower())))
+	    return sum(sentence_vectors) / (len(sentence_vectors) + 1)
+
+								</code></pre>
+							</div>
+						</div>
+
 
 
 			<footer id="gtco-footer" role="contentinfo">
