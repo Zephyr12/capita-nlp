@@ -14,7 +14,7 @@
 	<meta name="author" content="gettemplates.co" />
 
 	<!-- <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet"> -->
-	
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="css/animate.css">
 	<!-- Icomoon Icon Fonts-->
@@ -39,9 +39,9 @@
 
 	</head>
 	<body>
-		
+
 	<div class="gtco-loader"></div>
-	
+
 	<div id="page">
 	<nav class="gtco-nav" role="navigation">
 		<div class="gtco-container">
@@ -506,10 +506,57 @@
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading animate-box">
 					<h2>Future Work</h2>
+					<p align="justify">
+						As every system always leaves place for future development, this educational purposed dashboard
+						leaves space for a lot of improvements due to the chosen design patterns that were chosen that do not only
+						allow additional functionalities to be added, but also leaves space for improvements to it's current
+						key features.
+					</p>
+					<h3 align="left">Possible Improvements</h3>
+					<p align="justify">
+						Because of the scale of the project and the limited available resources that could be invested,
+						most of the technologies do not provide the highest efficiency.
+						<br><br>
+						<b>1. Facebook Data Source:</b> Because of the limited permissions from the Facebook API,
+						the best solution was to scrape Educational Institutions Event Descriptions by making
+						multiple requests to the Facebook GraphAPI. In order to cover all the necessary institutions,
+						we would be required to run a lot of search queries for each institution name. However,
+						as we first tried this solution, our token was banned for the reason of making <i>too many
+						API calls</i>. A second solution to this problem was to obviously make fewer API calls,
+						which means that we tried to filter only a small percentage of the Educational Institutions
+						to run the same algorithm. This also resulted in an API ban for the reason of <i>making
+						API calls too fast</i>. In order to actually make a functional Facebook Data Pipeline, our
+						immediate solution (as we were working under time pressure at that time because of various
+						other reasons mentioned previously) was to sleep the thread for one second after each API call -
+						that is because the rate limit imposed one API call per second considering a bigger amount
+						of time. <br> These being said, we do have solutions for future improvements of this specific component:
+						one of the solutions being to run multiple tokens per thread - hence being possible to
+						speed up the process <i>(tokens/thread)*threads</i> times. <br> Another solution could
+						be obtaining a Facebook Authorised token that would no longer be rate limited, but this
+						solution does not apply to our case.
+						<br><br>
+						<b>2. Topic Modelling Training:</b> The system currently works on a pre-trained model,
+						which results in less accurate results that it could be possible. In order to achieve
+						a more precise level of Topic Modelling, we could improve
+						LDA with a custom trained model, but that would
+						require a lot of data and time resources. However, if we would have more time,
+						we consider that it would be an investment worth taking, as these results are
+						extremely relevant for our project: more precise insight meaning a more successful platform.
+						<br><br>
+						<b>3. Adding more data Pipelines:</b> Because the system follows a Composite Pattern,
+						our Data Processing algorithms can support as many data sources as given, which means
+						our system can be expanded as much as desired. As a result, if the team could invest more
+						time in the project, there would be plenty of space to add more data sources as other
+						social media platforms or forums.
+						<br><br>
+						<b>4. Improving the architecture with caching files</b>
+						<br><br>
+						<b>5. Adding a Continuous Integration step using Travis</b>
+					</p>
 				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>
 
 
@@ -519,7 +566,7 @@
 			<div class="row copyright">
 				<div class="col-md-12">
 					<p class="pull-left">
-						<small class="block">&copy; lalala. All Rights Reserved.</small> 
+						<small class="block">&copy; lalala. All Rights Reserved.</small>
 					</p>
 				</div>
 			</div>
@@ -551,4 +598,3 @@
 
 	</body>
 </html>
-
