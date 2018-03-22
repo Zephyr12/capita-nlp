@@ -187,7 +187,11 @@ bp.add_url_rule("/schools/<school_id>/topics/", view_func=TopicList.as_view("top
 bp.add_url_rule("/schools/<school_id>/topics/<topic_id>", view_func=TopicView.as_view("topic_detail"))
 bp.add_url_rule("/schools/<school_id>/topics/<topic_id>/posts/", view_func=TopicPostList.as_view("posts_by_topic"))
 
-
+@bp.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    return response
 if __name__ == "__main__":
     app = Flask(__name__)
     app.register_blueprint(bp)
