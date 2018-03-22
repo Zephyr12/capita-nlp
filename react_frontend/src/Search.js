@@ -3,7 +3,8 @@ import axios from 'axios';
 import Suggestions from './Suggestions';
 import Autosuggest from 'react-autosuggest';
 import { Switch, Route } from 'react-router-dom';
-import SchoolDetails from './schoolDetails';
+import SchoolDetails from './SchoolDetails';
+import Posts from './Posts';
 
 
 /*change KEY and URL in order to make a request to the schools API endpoint*/
@@ -49,7 +50,6 @@ class Search extends Component {
       query: '',
       suggested_schools: {"count": 0, "data": []},
       data: [],
-      showHello: false,
       error: false
     });
   };
