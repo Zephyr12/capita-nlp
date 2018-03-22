@@ -72,7 +72,7 @@
 							<div class="display-tc">
 								<h1 class="animate-box" data-animate-effect="fadeInUp">Our Technologies</h1>
 								<br><br>
-								<h3><font color="white">Find below a list of all the technologies considered in the process of our aplication.</font></h3>
+								<h3><font color="white">Find below a list of all the technologies considered in the process of our application.</font></h3>
  									<!-- As we need to consider what possible technologies we might need to use for each
 									specific component, our research is conducted to evaluate what alternatives do we have
 									and which are most appropriate for our purpose. -->
@@ -110,10 +110,11 @@
 					<div class="row animate-box">
 						<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
 							<br><br><br><br>
-							<h2>Data Mining Pipelines</h2>
-							<p>The purpose of the data mining pipeline is to grant us access to social media data, in a useful and accessible format, that is reliably and periodically captured. It focuses on capturing a variety of social media education-related data that include information about specific educational institutions or people in the educational domain, from relevant social media platforms.</p>
-							<p> Our information is updated daily. However the process can be done more often but it would be counter productive as it comes with unwanted risks: receiving more data than the system can process, which would result in a system failure.</p>
-							<p>The three initial social media sources were <a href="#twitter-pipeline">Twitter</a>, <a href="#facebook-pipeline">Facebook</a> and MumsNet. Lack of content on MumsNet forum, forced us to switch to another source and hence, we chose <a href="#scrapy-pipeline">scraping The Student Room</a> - which required the same scraping technology. Morever, every source required us to consider a specific API to work with.</p><br>
+							<h2>Data Processing Pipelines</h2>
+							<p>The purpose of the data processing pipeline is to grant us access to social media data, in a useful and accessible format, that is reliably and periodically captured.
+								It focuses on capturing assorted social media data including information about specific educational institutions.</p>
+							<p> Our information is updated daily, the process could be done more often but it would be counter productive as it comes with unwanted risks, i.e. receiving more data than the system can process, which could result in a system failure.</p>
+							<p> The three initial social media sources were <a href="#twitter-pipeline">Twitter</a>, <a href="#facebook-pipeline">Facebook</a> and MumsNet. A lack of content on MumsNet forum forced us to switch to another source and hence, we chose <a href="#scrapy-pipeline">The Student Room</a> - which required the same scraping technology.</p><br>
 							</div>
 						</div>
 					</div>
@@ -126,15 +127,15 @@
 								<h2 id="facebook-pipeline">Facebook SDK for Python</h2>
 								<b><h3><font color="white">WHY FACEBOOK API?</font></h3></b>
 								<p>
-									In order to create a Facebook pipeline, we had a few options: either using the
-									<a href="http://facebook-sdk.readthedocs.io/en/latest/index.html">Facebook provided SDK for Python</a>[1], or use other libraries that would ease the work with the API for the developers. Although using other libraries would have made our initial developing process more easy (achieving a working Facebook pipeline), it would have come with risks that we could not take such as unwanted and unknown specific bugs inside that library, as they are not meant to be used for scraping. Considering our system complexity and the fact that Data Pipeline is our initial component, we decided on using the Facebook provided API, despite its poor documentation
-									and deprecated functionalities in time[2].</p>
+									In order to process data from Facebook, we had a few options: either using the
+									<a href="http://facebook-sdk.readthedocs.io/en/latest/index.html">Facebook provided SDK for Python</a>[1], or use other libraries that would ease the work with the API for the developers. Although using other libraries would have made our initial developing process more easy (achieving a working Facebook pipeline), it would have come with risks that we could not take such as unwanted and unknown specific bugs inside that library.
+									 Considering our system complexity and the fact that Data Pipeline is our initial component, we decided to use Facebook's GraphAPI, despite its limited feature set.</p>
 								<br>
 								<b><h3><font color="white">RAISED ISSUES</font></h3></b>
-								<p>As we have specified the deprecated functionalities, we came to realise that Facebook did provide support for Public Feed API (which was our main request for scraping the desired information), but <b>they <a href="https://developers.facebook.com/docs/public_feed/">restricted</a>the access to the Feed API back in 2015</b> - which left us wondering what solution is most appropriate in order to get the desired information from Facebook.</p>
-									
+								<p>As GraphAPI recently deprecated certain functionality, we came to realise that, while Facebook did provide support for the Public Feed API (which allowed users access to a realtime feed of user posts), <b>they <a href="https://developers.facebook.com/docs/public_feed/">restricted</a> access to the API to select partners back in 2015</b> - which left us wondering which solution is most appropriate in order to get the desired information from Facebook.</p>
+
 								<b><h3><font color="white">SOLUTION</font></h3></b>
-								<p>Even though we could not make use of the public feed of Facebook posts, we could still make <b>search query requests</b> to the Facebook API. As a result, we can have access to search events that are related to any UK Educational Institution. Thus, this pipeline is set up to yield event descriptions (together with other relevant information as concerned university, location, dates).</p>
+								<p>Even though we could not make use of the public feed of Facebook posts, we could still make <b>search query requests</b> to the Facebook API. As a result, we can have access to Facebook events at any UK Educational Institution. Thus, this pipeline is set up to yield event data (together with other relevant information as concerned university, location, dates).</p>
 							</div>
 						</div>
 					</div>
@@ -154,17 +155,16 @@
 									<a href="https://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a>.
 								</p>
 								<p>
-									While BeautifulSoup is just a <b>library</b> for parsing html(and xml) style documents,
-									Scrapy is a <b>full framework</b> for web crawling which provides the tools to manage every stage of web
-									crawl - tools	that come with certain advantages. Some of these tools are:
+									While BeautifulSoup just parses html documents,
+									Scrapy is a <b>full web crawling framework</b> which provides the tools to manage every stage of web
+									crawl. Some of these tools are:
 									<ol>
 										<li>
-											Request manager: provides the speed of cuncurrency without needing to invest time in developing the
+											Request manager: provides the speed of concurrency without needing to invest time in developing a
 											concurrent architecture, as it is all done behind the scenes.
 										</li>
 										<li>
-											Selectors: which are used to parse the HTML documents in order to find the bits that are needed to be
-											parsed. (BeautifulSoup also does this).
+											Selectors: which are used to parse the HTML documents, in order to find useful information. (BeautifulSoup also does this).
 										</li>
 										<li>
 											Pipelines: once the data is retrieved, it can be <b>passed through various pipelines</b>, which
@@ -172,22 +172,19 @@
 										</li>
 									</ol></p>
 									<p>
-										As a result, we decided that Scrapy will be not only easier to implement (which also brings the advantage
-										of being <b>easier to debug and maintain</b>), but actually faster because of the way it handles cocunrrency.
+										We decided that Scrapy would not only be easier to implement, debug, and maintain: but that it would actually faster because of the way it handles concurrency.
 									</p>
 									<br>
 									<b><h3><font color="white">RAISED ISSUES</font></h3></b>
 									<p>
-										Because of the way Scrapy works, even though it produced the desired output on it's own (yielding
-										forum posts), it did not behave as expected when we tried to merge the pipelines.
-										Scrapy runs more threads in order to be faster and more efficient, but in order to be able to send
-										signals between these threads, it needs to run on the main one in order - which it didn't at the
-										stage of merging the pipes.
+										Because Scrapy used it's own pipeline system, integrating it with the pipelines used by the rest of the system proved to be a challenge.
+										Scrapy runs more threads in order to be faster and more efficient. But in order to be able to send
+										signals between these threads, it needs to run on the main thread in order to read the stop program signal.
 									</p>
 									<b><h3><font color="white">SOLUTION</font></h3></b>
 									<p>
 										Looked up the Source Code for Scrapy to understand how it starts its crawler and then modified the
-										thread invocation.
+										thread invocation and manually started the scraping process.
 									</p>
 								</div>
 							</div>
@@ -199,20 +196,15 @@
 							<div class="row">
 								<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
 									<h2 id="twitter-pipeline">Twitter Data Pipeline</h2>
-									<b><h3><font color="white">WHY TWEEPY?</font></h3></b>
+									<b>
+										<h3>
+											<font color="white">
+												WHY TWEEPY?
+											</font>
+										</h3>
+									</b>
 									<p>
-										<a href="http://tweepy.readthedocs.io/en/v3.6.0/">tweepy</a>[4] is good
-									</p>
-
-
-									<br>
-									<b><h3><font color="white">RAISED ISSUES</font></h3></b>
-									<p>
-										never
-									</p>
-									<b><h3><font color="white">SOLUTION</font></h3></b>
-									<p>
-										xDxDxD
+										<a href="http://tweepy.readthedocs.io/en/v3.6.0/">tweepy</a>[4] the industry standard python library for interacting with twitter and it allowed us to use the twitter REST API to it's fullest extent. It's minimal and pythonic nature meant that it was an easy fit for project and took minimal time to integrate into the core Data Pipeline. It raised no issues.
 									</p>
 								</div>
 							</div>
@@ -328,18 +320,20 @@
 											<h2 id="postgresql">PostgreSQL</h2>
 											<b><h3><font color="white">WHY POSTGRESQL?</font></h3></b>
 											<p>
-												<a href="https://www.postgresql.org/">postgresql</a> is good
+												<a href="https://www.postgresql.org/">Postgresql</a> has the best SQL standard support among open source databases, with support
+												for various data types and a large library of built-in data manipulation functions.
 											</p>
 
 
 											<br>
 											<b><h3><font color="white">RAISED ISSUES</font></h3></b>
 											<p>
-												never
+												Our client required the system to use Microsoft SQL server. But due to unforeseen circumstances on their side, we only received
+												SQL server licenses and keys a week before project hand-in deadline. We decided to use PostgreSQL in the interim as it is mostly compatible with Microsoft SQL Server and migrating from one to the other is a well documented process.
 											</p>
 											<b><h3><font color="white">SOLUTION</font></h3></b>
 											<p>
-												xDxDxD
+												We are planning to migrate to SQL Server over the client handover period.
 											</p>
 										</div>
 									</div>

@@ -14,7 +14,7 @@
 	<meta name="author" content="gettemplates.co" />
 
 	<!-- <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet"> -->
-	
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="css/animate.css">
 	<!-- Icomoon Icon Fonts-->
@@ -40,9 +40,9 @@
 
 	</head>
 	<body>
-		
+
 	<div class="gtco-loader"></div>
-	
+
 	<div id="page">
 	<nav class="gtco-nav" role="navigation">
 		<div class="gtco-container">
@@ -59,7 +59,7 @@
 						<li class="active"><a href="management.html">Management</a></li>
 					</ul>
 				</div>
-			</div>	
+			</div>
 		</div>
 	</nav>
 
@@ -70,32 +70,299 @@
 				<div class="col-md-8 col-md-offset-2 text-center">
 					<div class="display-t">
 						<div class="display-tc">
-
+							<h1 class="animate-box" data-animate-effect="fadeInUp">Management</h1>
+							<h3><font color="white">A simple guide to deploying and using the application.</font></h3>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</header>
-	
 
-	<!-- <footer id="gtco-footer" role="contentinfo">
+	<div class="gtco-container">
+		<div class="row animate-box">
+			<div class="col-md-12 col-md-offset-0  gtco-heading animate-box">
+				<br><br><br><br>
+				<h2>API Documentation</h2>
+				<p>The API uses a principle called HATEOAS, which means the API returns context sensitive links that allow the client to traverse the API without having to manually construct URLS.</p>
+				<p>An example of this is in the paginated list endpoints.</p>
+				<br><br>
+				<pre class="prettyprint"><code>
+{
+  "count": 20,
+  "data": [...],
+  "next_page": "http://localhost:5000/schools/University%20College%20London/posts/?n=20&p=2&before=0&after=1521739727&field="
+}
+				</code></pre>
+				<p> Which contains a link on to the next page if and only if that page exists and isn't empty. </p>
+				<pre class="prettyprint"><code>
+{
+  "count": 14,
+  "data": [...],
+}
+				</code></pre>
+
+				<p>
+					<dl>
+						<dt> URL </dt>
+						<dd>
+							<code>GET /schools/ </code>
+						</dd>
+						<dt> Description </dt>
+						<dd>
+							Get a paginated list of schools.
+						</dd>
+
+						<dt> Query Parameters </dt>
+						<dd>
+							<ul>
+								<li><code>n</code>: the number of results to return</li>
+								<li><code>p</code>: the offset into the list of results. Starts at 1.</li>
+								<li><code>field</code>: filters the list of schools by name using the value of <code>field</code> as a prefix.</li>
+							</ul>
+						</dd>
+					</dl>
+				</p>
+
+
+				<p>
+					<dl>
+						<dt> URL </dt>
+						<dd>
+							<code>GET /schools/&lt;school_id&gt;</code>
+						</dd>
+						<dt> Description </dt>
+						<dd>
+							Returns a detailed view of a school with school id <code>school_id</code>
+						</dd>
+
+						<dt> Query Parameters </dt>
+						<dd>None.
+						</dd>
+
+					</dl>
+				</p>
+
+				<p>
+					<dl>
+						<dt> URL </dt>
+						<dd>
+							<code>GET /schools/&lt;school_id&gt;/posts/</code>
+						</dd>
+						<dt> Description </dt>
+						<dd>
+							Returns a paginated list of posts.
+						</dd>
+
+						<dt> Query Parameters </dt>
+						<dd>
+							<ul>
+								<li><code>n</code>: the number of results to return</li>
+								<li><code>p</code>: the offset into the list of results. Starts at 1.</li>
+								<li><code>field</code>: filters the list of posts by name using the value of <code>field</code>.</li>
+								<li><code>before</code>: defines the earliest date that appears in this list.</li>
+								<li><code>after</code>: defines the latest date that appears in this list.</li>
+							</ul>
+						</dd>
+
+
+					</dl>
+				</p>
+
+				<p>
+					<dl>
+						<dt> URL </dt>
+						<dd>
+							<code>GET /schools/&lt;school_id&gt;/topics/</code>
+						</dd>
+						<dt> Description </dt>
+						<dd>
+							Returns a paginated list of topics.
+						</dd>
+
+						<dt> Query Parameters </dt>
+						<dd>
+							<ul>
+								<li><code>n</code>: the number of results to return</li>
+								<li><code>p</code>: the offset into the list of results. Starts at 1.</li>
+								<li><code>field</code>: filters the list of topics by name using the value of <code>field</code>.</li>
+								<li><code>before</code>: defines the earliest date that appears in this list.</li>
+								<li><code>after</code>: defines the latest date that appears in this list.</li>
+							</ul>
+						</dd>
+					</dl>
+				</p>
+
+				<p>
+					<dl>
+						<dt> URL </dt>
+						<dd>
+							<code>GET /schools/&lt;school_id&gt;/topics/&lt;topic_id&gt;</code>
+						</dd>
+						<dt> Description </dt>
+						<dd>
+							Returns a detailed view of the topic with topic id <code>topic_id</code>. That belongs to the school with school id <code>school_id</code>
+						</dd>
+
+						<dt> Query Parameters </dt>
+						<dd>None.
+						</dd>
+
+					</dl>
+				</p>
+
+				<p>
+					<dl>
+						<dt> URL </dt>
+						<dd>
+							<code>GET /schools/&lt;school_id&gt;/topics/&lt;topic_id&gt;/posts/</code>
+						</dd>
+						<dt> Description </dt>
+						<dd>
+							Returns a paginated list of posts associated with the given topic and school.
+						</dd>
+
+						<dt> Query Parameters </dt>
+						<dd>
+							<ul>
+								<li><code>n</code>: the number of results to return</li>
+								<li><code>p</code>: the offset into the list of results. Starts at 1.</li>
+								<li><code>field</code>: filters the list of posts by name using the value of <code>field</code>.</li>
+								<li><code>before</code>: defines the earliest date that appears in this list.</li>
+								<li><code>after</code>: defines the latest date that appears in this list.</li>
+							</ul>
+						</dd>
+					</dl>
+				</p>
+
+
+				<br>
+				</div>
+			</div>
+		</div>
+
+		<header id="gtco-header" class="gtco-cover gtco-cover-xs" role="banner" style="background-image:url(images/img_bg_1.jpg);">
+			<div class="overlay"></div>
+			<div class="gtco-container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 text-center">
+						<div class="display-t">
+							<div class="display-tc">
+								<h1 class="animate-box" data-animate-effect="fadeInUp">Installation Manual</h1>
+								<h3><font color="white">A guide to set up the application.</font></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="gtco-container">
+			<div class="row animate-box">
+				<div class="col-md-12 col-md-offset-0  gtco-heading animate-box">
+					<br><br>
+					<p>This installation guide assumes a fully up-to-date, working and functional Linux distribution with Python3, PostgreSQL and git installed</p>
+
+					<pre><code class="prettyprint">
+	$ tar -xvf source_code.tar.gz
+	$ cd capita_project
+	$ virtualenv venv
+	$ source venv/bin/activate
+	$ pip install -r requirements.txt
+	$ cd react_frontend
+	$ npm install
+	$ cd ..
+	$ nano src/sources.txt # add your twitter key to this file
+	$ nano src/fb.py # add your facebook api key to this file
+	$ nano src/conf.py # add your database credentials and the schools you wish to track here
+					</code></pre>
+
+					</div>
+				</div>
+			</div>
+
+
+		<header id="gtco-header" class="gtco-cover gtco-cover-xs" role="banner" style="background-image:url(images/img_bg_1.jpg);">
+			<div class="overlay"></div>
+			<div class="gtco-container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 text-center">
+						<div class="display-t">
+							<div class="display-tc">
+								<h1 class="animate-box" data-animate-effect="fadeInUp">User Manual</h1>
+								<h3><font color="white">A simple guide to use the application after installation.</font></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="gtco-container">
+			<div class="row animate-box">
+				<div class="col-md-12 col-md-offset-0  gtco-heading animate-box">
+					<br><br><br>
+					<p>There are four main tasks that you typically need to perform. These are: starting the data processing pipeline,
+					generating topics, starting the backend API server and starting the frontend application server.</p>
+
+					<h3>
+						Preliminary steps
+					</h3>
+					<p>
+						Before performing any of these tasks you first need to initialise your environment variables. You can do this
+						by navigating to <code>$VENV_ROOT/bin/</code> and running <code>source activate</code>, where <code>$VENV_ROOT</code>
+						is the root directory of the virtual environment during installation.
+					</p>
+
+					<h3>
+						Starting the data processing pipeline
+					</h3>
+					<p>
+						To start the data processing pipeline, navigate to the root of the project and execute <code>python3 src/manage.py data_pipeline</code>.
+					</p>
+
+					<h3>
+						Generating topics
+					</h3>
+					<p>
+						To regenerate topics, navigate to the root of the project and execute <code>python3 src/manage.py retopic</code>.
+					</p>
+
+					<h3>
+						Starting the backend API server
+					</h3>
+					<p>
+						To start the backend API server, navigate to the root of the project and execute <code>python3 src/api.py</code>.
+					</p>
+
+					<h3>
+						Starting the frontend application server
+					</h3>
+					<p>
+						To start the frontend application server, navigate to <code>$PROJECT_ROOT/react_frontend/</code> and
+						run <code>npm start</code>.
+					</p>
+					</div>
+				</div>
+			</div>
+
+	<footer id="gtco-footer" role="contentinfo">
 		<div class="gtco-container">
 			<div class="row copyright">
 				<div class="col-md-12">
 					<p class="pull-left">
-						<small class="block">&copy; lalala. All Rights Reserved.</small> 
+						<small class="block">&copy;All Rights Reserved.</small>
 					</p>
 				</div>
 			</div>
 		</div>
-	</footer> -->
+	</footer>
 	</div>
 
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 	</div>
-	
+
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
 	<!-- jQuery Easing -->
@@ -113,7 +380,7 @@
 	<script src="js/magnific-popup-options.js"></script>
 	<!-- Main -->
 	<script src="js/main.js"></script>
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 
 	</body>
 </html>
-
