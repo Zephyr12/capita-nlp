@@ -186,9 +186,44 @@
 							<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
 								<br><br><br><br>
 								<h2>Documentation</h2>
-									
+									Even though the code is as much refactored as possible, having
+									suggestive function and parameter names, it is not enough for a future developer
+									to understand the behaviour of a code block. This system presents rich documentation
+									based on docstrings and appropriate comments where necessary.
 								</div>
 							</div>
+							<pre class="prettyprint"><code>
+	 def get_school_events(self, educational_institution, since):
+		"""
+		Gets school events as a result of the search query.
+		Also saves a pointer to the next page if there are many results for the specific query.
+		:param educational_institution: school's name passed to the search query
+		:param since: lowest accepted start date for found events
+		"""
+							</code></pre>
+<pre class="prettyprint"><code>
+	 def iterate_throught_pages(self, since, educational_institution):
+		"""
+		As an initial search query result might not display all the events,
+		it can display a path to the next page of results related
+		to our desired educational institutions.
+		This function follows those next pages of results.
+		"""
+</code></pre>
+<pre class="prettyprint"><code>
+	def run(self):
+		"""
+		This should be the only function that concerns any use of this class.
+
+		Main function that runs the entire script.
+		It yields all the events one by one, providing relevant information such as event name,
+		location and description, but also the search query under which it was found i.g. the institution name.
+
+		Running this function daily produces new results. It uses the since parameter in order to detect if a similar
+		query was already made in the same day. If a similar query was already made the same day, then it returns the
+		results stored in cache.
+		"""
+</pre></code>
 						</div>
 
 
