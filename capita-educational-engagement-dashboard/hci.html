@@ -91,7 +91,7 @@
 				<br><br>
 				Some of these features represent:
 				<ol><b><li>Explicit code structures</li> <li>API surface area is not bigger than
-				necessary</li> <li>Reduced boilerplate</li> <li>Reduced dependencies</li> <li>Error returns have a meaningful state</li>
+				necessary</li> <li>Reduced dependencies</li> <li>Error returns have a meaningful state</li>
 				<li>Functionalities are well documented</li> <li>Has written tests</li></b></ol>
 		</p>
 
@@ -138,11 +138,59 @@
 				<div class="row animate-box">
 					<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
 						<br><br><br><br>
-						<h2>Reduced Boilerplate Area</h2>
-							
+						<h2>Reduced Dependencies</h2>
+							As it is presented on our <a href="design.html">Design</a> page, the system reduces
+							the dependencies as much as possible, keeping the code self-contained where possible.
+							That is because the more dependencies a system has, the more potential problems
+							it can cause id downstream consumer code.
+							<br><br>
+							Where it has to use pieces of functionalities from other modules, it only extracts
+							those pieces of functionality that are required. Thus, the system balances between
+							code reuse and tight coupling - trying to decide when is best to
+							rewrite a piece of code (if it is a small one for example) a and when to extract
+							one from another module(when the task is more complex).
 						</div>
 					</div>
 				</div>
+
+				<div class="gtco-container">
+					<div class="row animate-box">
+						<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
+							<br><br><br><br>
+							<h2>Meaningful Error States</h2>
+								If a developer encounters a problem with it's code implementation,
+								he should be able to understand what went wrong so that he can debug his code.
+								However, if the return state would not contain any relevant piece of information
+								(explaining what caused the error), his only chance to fix it is to start
+								digging inside the source code and try to understand where does the problem
+								come from.
+							</div>
+						</div>
+						<pre class="prettyprint"><code>
+ except KeyError e:
+	 location = "No location displayed"
+	 raise
+	 print(e)
+	 print("Event location can not be accesses")
+</code></pre>
+<pre class="prettyprint"><code>
+ except IndexError as e:
+	print(e)
+	print("IndexError while trying to access table row.")
+	raise
+</code></pre>
+					</div>
+
+					<div class="gtco-container">
+						<div class="row animate-box">
+							<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
+								<br><br><br><br>
+								<h2>Documentation</h2>
+									
+								</div>
+							</div>
+						</div>
+
 
 
 	<!-- <footer id="gtco-footer" role="contentinfo">
