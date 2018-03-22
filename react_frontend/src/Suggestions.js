@@ -2,7 +2,6 @@ import React from 'react'
 import Search from './Search'
 import { Switch, Route, Link } from 'react-router-dom'
 import SchoolDetails from './SchoolDetails'
-import Posts from './Posts'
 
 
 /*expect a state named suggested_schools*/
