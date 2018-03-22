@@ -108,7 +108,16 @@
 				and they represent the purpose of the method. The purpose is to avoid creating functions
 				that also do what they are expected to do but might have some unknown side-effects - such that
 				a future user of our API would have to dive deep in the source code to understand
-				why his implementation does not behave as desired. 
+				why his implementation does not behave as desired. Here are some examples of function names, together
+				with their parameter names:
+				<ul>
+					<li><code class="prettyprint"> def create_table(self, table_name, key_value_pairs):</code></li>
+					<li><code class="prettyprint"> def add_row(self, table_name, key_value_pairs, returning=""):</code></li>
+					<li><code class="prettyprint"> def evaluate(classification, raw_message):</code></li>
+					<li><code class="prettyprint"> def get_event_details(self, since, educational_institution):</code></li>
+					<li><code class="prettyprint"> def add_event_details_to_cache_file(self, description, location, name, since, educational_institution):</code></li>
+					<li><code class="prettyprint">  def iterate_throught_pages(self, since, educational_institution):</code></li>
+				</ul>
 				</div>
 			</div>
 		</div>
@@ -147,6 +156,8 @@
 	<script src="js/magnific-popup-options.js"></script>
 	<!-- Main -->
 	<script src="js/main.js"></script>
+
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 
 	</body>
 </html>
