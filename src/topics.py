@@ -1,4 +1,5 @@
 # coding: utf-8
+import pdb
 import gensim.downloader as api
 from gensim.models import KeyedVectors
 import nltk
@@ -10,11 +11,14 @@ import itertools
 # word2vec = KeyedVectors.load_word2vec_format("../../GoogleNews-vectors-negative300.bin", binary=True)
 word2vec = api.load("glove-twitter-25")
 
+
 def pairwise(iterable):
     a,b = itertools.tee(iterable)
     return zip(a, itertools.islice(b, 1, None))
 
 def x2vec(sent, tokenizer=nltk.word_tokenize, model=word2vec):
+
+    '''
     words = list(
             map(
                 np.concatenate,
@@ -29,12 +33,13 @@ def x2vec(sent, tokenizer=nltk.word_tokenize, model=word2vec):
                     )
                 )
             )
+    '''
     words = [word2vec[word] for word in nltk.word_tokenize(sent) if word in word2vec]
     return sum(words) / (len(words) + 1)
 
 def doc2vec(doc):
-    sentence_vectors =list(map(x2vec, nltk.sent_tokenize(doc.lower())))
-    return sum(sentence_vectors) / (len(sentence_vectors) + 1)
+    sentence_vectors = list(map(x2vec, nltk.sent_tokenize(doc.lower())))
+    return 0 * x2vec("apple") + sum(sentence_vectors) / (len(sentence_vectors) + 1)
 
 def split(data, n=2):
     _, labels = kmeans2(np.array([t[0] for t in data]), n, minit='points')

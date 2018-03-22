@@ -10,6 +10,7 @@ import sys
 from pipes import Source, Processor, Writer, Join
 import psycopg2.extras
 from nltk.corpus import stopwords
+import math
 
 def recreate_tables(db, drop=False):
     if drop:
@@ -66,14 +67,37 @@ def load_fb_posts(db):
     src.start()
 
 def retopic(db):
+    print("TEST")
     import topics
-    unassigned_posts = db.select("select * from post where topic_id is null")
-    for topic in topics.split_raw(unassigned_posts, n=10):
-        if topic:
-            text = topic[0]["raw_text"][:125] + "..."
-            topic_id = db.add_row("topic", {"topic_description": text}, returning="id")[0]
-            for post in topic:
-                db.update_row("post", post["post_id"], {"topic_id": topic_id}, id_field="post_id")
+    print("TEST")
+    
+    schools = db.select("select distinct(school_id) from post where topic_id is null")
+    
+    for school in schools:
+        school = school["school_id"]
+        topic_batches = db.select("select distinct(to_char(timestamp, 'YYYY-MM')) from post order by to_char(timestamp, 'YYYY-MM')")
+        for topic_batch in topic_batches:
+            print(school, topic_batch)
+            topic_batch = topic_batch["to_char"]
+            unassigned_posts = db.select(
+                    "select * from post where "
+                    "     topic_id is null "
+                    " and to_char(timestamp, 'YYYY-MM') = %s "
+                    " and school_id = %s", topic_batch, school)
+
+            if unassigned_posts == []:
+                continue
+
+            print(unassigned_posts)
+            for i, topic in enumerate(topics.split_raw(
+                    unassigned_posts,
+                    n=math.ceil(len(unassigned_posts) / 5.0))):
+                print(topic)
+                if topic:
+                    text = school + "::" + topic_batch + "::" + str(i) #topic[0]["raw_text"][:125] + "..."
+                    topic_id = db.add_row("topic", {"topic_description": text}, returning="id")[0]
+                    for post in topic:
+                        db.update_row("post", post["post_id"], {"topic_id": topic_id}, id_field="post_id")
 
 
 def data_pipeline(db, schools=[], terms=[]):
