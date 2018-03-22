@@ -4,12 +4,11 @@ import Suggestions from './Suggestions';
 import Autosuggest from 'react-autosuggest';
 import { Switch, Route } from 'react-router-dom';
 import SchoolDetails from './SchoolDetails';
-import Posts from './Posts';
 
 
 /*change KEY and URL in order to make a request to the schools API endpoint*/
 
-const API_URL = 'http://127.0.0.1:5000'
+const API_URL = 'http://a967da8e.ngrok.io'
 
 
 
@@ -22,7 +21,6 @@ class Search extends Component {
       data: [],
       error: false
     }
-
     this.getInfo=this.getInfo.bind(this);
     this.handleInputChange=this.handleInputChange.bind(this);
   }
