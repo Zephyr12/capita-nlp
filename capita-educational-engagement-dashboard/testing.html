@@ -67,9 +67,10 @@
 					<div class="display-t">
 						<div class="display-tc">
 							<h1 class="animate-box" data-animate-effect="fadeInUp">Testing</h1><br>
-							<p>
-								These are the testing strategies applied to our system.
-							</p>
+							<p> <font color="white">
+								These are the testing strategies that we consider are necessary to check if our
+								system behaves as expected and is resilient.
+							</font></p>
 						</div>
 					</div>
 				</div>
@@ -82,7 +83,11 @@
 			<div class="col-md-12 col-md-offset-0  gtco-heading animate-box">
 				<br><br><br><br>
 				<h2>Stress Testing</h2>
-
+					<p>
+						The purpose of the test stressing is to assert that our system works as expected under
+						normal environmental conditions. If the system passes a stress test (exaggerated levels of stress),
+						then we can assume that it would not fail under normal conditions.
+					</p>
 				</div>
 			</div>
 		</div>
@@ -92,7 +97,24 @@
 				<div class="col-md-12 col-md-offset-0  gtco-heading animate-box">
 					<br><br><br><br>
 					<h2>Unit Testing</h2>
-
+					<p>
+						Unit Testing represents the most pervasive kind of testing for our system - checking if
+						small individual components do behave as expected. They are also useful for the development
+						process as they reassure the creators of the system that their implementations are correct,
+						but it also makes it easier to add new functionality - that is because it offers
+						the certainty that the old behaviour of the system did not change despite the changes
+						that were made.
+					</p>
+					<p>
+						To test our Data Processing Pipeline, we used Python's nose2 module in combination with
+						the unit testing framework to ensure fast and repeatable unit tests.
+					</p>
+					<p>
+						We used Scrapy Contracts for The Student Forum spider to assure that the spider work as intended.
+						A Scrapy Contract assures that the parse level returns a certain level of items (some levels should not
+						return items, while others should return at least one item) and that it does scrape and return
+						the correct information (the forum post and the concerned university).
+					</p>
 					</div>
 				</div>
 			</div>
@@ -102,20 +124,15 @@
 					<div class="col-md-12 col-md-offset-0  gtco-heading animate-box">
 						<br><br><br><br>
 						<h2>Integration Testing</h2>
-
+							<p>
+								This stage represents the testing of multiple individual modules combined together and checked if
+								they behave accordingly to the specifications as a group. It takes our individual modules that were
+								unit tested and then applies tests defined in the integration test plan and then delivers as its output
+								the integrated system, assuring that the components work as expected when merged.
+							</p>
 						</div>
 					</div>
 				</div>
-
-				<div class="gtco-container">
-					<div class="row animate-box">
-						<div class="col-md-12 col-md-offset-0  gtco-heading animate-box">
-							<br><br><br><br>
-							<h2>Automated Testing</h2>
-
-							</div>
-						</div>
-					</div>
 
 
 	<!-- <footer id="gtco-footer" role="contentinfo">
