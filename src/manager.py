@@ -13,6 +13,13 @@ from nltk.corpus import stopwords
 import math
 
 def recreate_tables(db, drop=False):
+    '''
+    Recreates the database tables according to the schema if they dont exist
+
+    :param db: the connection to the database that neededs it's tables recreated
+    :param drop: default `False`, deletes the tables if they already exist
+    '''
+
     if drop:
         db.drop_table("schools")
         db.drop_table("post")
@@ -49,6 +56,11 @@ def recreate_tables(db, drop=False):
             )
 
 def load_schools_table(db):
+    '''
+    Loads a list of schools from `file('data/schools.csv')` into a database using the database connection `db`
+
+    :param db: the connection to the database to be loaded
+    '''
     data_table = csv.DictReader(open("data/schools.csv"))
     for row in data_table:
         db.add_row("schools", {"URN": row["URN"] , "establishment_name": row["EstablishmentName"], "postcode": row["Postcode"], "type_of_establishment": row["TypeOfEstablishment (name)"], "phase_of_education": row["PhaseOfEducation (name)"]})
@@ -67,9 +79,11 @@ def load_fb_posts(db):
     src.start()
 
 def retopic(db):
-    print("TEST")
+    '''
+        Computes the topics for all of the posts in `db`
+        :param db: the database to recompute topics for
+    '''
     import topics
-    print("TEST")
     
     schools = db.select("select distinct(school_id) from post where topic_id is null")
     
@@ -77,7 +91,6 @@ def retopic(db):
         school = school["school_id"]
         topic_batches = db.select("select distinct(to_char(timestamp, 'YYYY-MM')) from post order by to_char(timestamp, 'YYYY-MM')")
         for topic_batch in topic_batches:
-            print(school, topic_batch)
             topic_batch = topic_batch["to_char"]
             unassigned_posts = db.select(
                     "select * from post where "
@@ -88,11 +101,9 @@ def retopic(db):
             if unassigned_posts == []:
                 continue
 
-            print(unassigned_posts)
             for i, topic in enumerate(topics.split_raw(
                     unassigned_posts,
                     n=math.ceil(len(unassigned_posts) / 5.0))):
-                print(topic)
                 if topic:
                     text = school + "::" + topic_batch + "::" + str(i) #topic[0]["raw_text"][:125] + "..."
                     topic_id = db.add_row("topic", {"topic_description": text}, returning="id")[0]
@@ -100,14 +111,15 @@ def retopic(db):
                         db.update_row("post", post["post_id"], {"topic_id": topic_id}, id_field="post_id")
 
 
-def data_pipeline(db, schools=[], terms=[]):
+def data_pipeline(db):
+    '''
+    Constructs the compute graph for the data processing pipline and set's it running. Warning: Blocks the main thread
+    :param db: the database to recompute insert the posts into
+    '''
     debug = Writer(print)
     out = Writer(lambda x: db.add_row("post", x))
-    #join = Join([out], lambda d: d["raw_text"], count=1)
-    #ner_debug = Writer(lambda x: print("NER:", x))
-    #ner = Processor([join, out], nlp.fuzzy_classifier(schools))
     sentiment = Processor([out, debug], nlp.sentiment())
-    twitter = Source([sentiment], TweetStreamerSource(terms))
+    twitter = Source([sentiment], TweetStreamerSource())
     tsr = Source([sentiment], tsr_source(conf.tsr_ner_shortcut))
 
 

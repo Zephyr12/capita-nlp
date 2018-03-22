@@ -28,6 +28,12 @@ class CustomJsonEncoder(JSONEncoder):
 
 
 class ListView(View):
+    '''
+        This class provides a generic list view over an sql table providing a
+        few predefined fields that records can be used to filter the table for
+        the appropriate records
+    '''
+
     methods = ["GET"]
     def records(self, n, p, before, after, search):
         
@@ -56,6 +62,10 @@ class ListView(View):
                     })
 
 class SchoolList(ListView):
+    '''
+        This class extends the list view and provides a view into the schools table
+    '''
+
     def records(self, n, p, before, after, search, *args):
         print(search)
         cursor.execute(
@@ -71,6 +81,10 @@ class SchoolList(ListView):
                 for record in cursor.fetchall()]
 
 class PostList(ListView):
+    '''
+        This class extends the list view and provides a view into the posts of a particular school
+    '''
+
     def records(self, n, p, before, after, search, **kwargs):
         cursor.execute(
                 "SELECT post.* FROM post INNER JOIN schools "
@@ -91,6 +105,10 @@ class PostList(ListView):
         return cursor.fetchall()
 
 class TopicList(ListView):
+    '''
+        This class extends the list view and provides a view into the topics of
+        a particular school
+    '''
     def records(self, n, p, before, after, search, **kwargs):
         cursor.execute(
                 "SELECT topic.* FROM topic INNER JOIN post "
@@ -118,6 +136,10 @@ class TopicList(ListView):
                 for record in cursor.fetchall()]
 
 class DetailView(View):
+    '''
+    A generic view class that abstracts over the concept of a single-item view
+    '''
+
     methods = ["GET"]
 
     def record(self, **kwargs):
@@ -127,6 +149,10 @@ class DetailView(View):
         return jsonify(self.record(**kwargs))
 
 class SchoolView(DetailView):
+    '''
+    A detail view that looks renders a school into json and returns a link to a
+    list of that school's topics and posts
+    '''
 
     def record(self, **kwargs):
         id = kwargs["school_id"]
@@ -139,6 +165,10 @@ class SchoolView(DetailView):
                 }
 
 class TopicView(DetailView):
+    '''
+    A detail view that looks renders a topic into json and returns a link to a
+    list of that topic's posts
+    '''
 
     def record(self, **kwargs):
         id = kwargs["topic_id"]
@@ -150,10 +180,13 @@ class TopicView(DetailView):
                 }
 
 class TopicPostList(ListView):
-
+    '''
+        This class extends the list view and provides a view into the posts of
+        a particular topic
+    '''
     def records(self, n, p, before, after, search, **kwargs):
         cursor.execute(
-                "SELECT * FROM post INNER JOIN schools "
+                "SELECT post.* FROM post INNER JOIN schools "
                 "ON post.school_id = schools.establishment_name "
                 "INNER JOIN topic "
                 "ON topic.id = post.topic_id "
@@ -178,6 +211,9 @@ class TopicPostList(ListView):
 
 @bp.route('/')
 def index():
+    '''
+    The index redirects to the school search endpoint
+    '''
     return redirect(url_for(".schools", _external=True))
 
 bp.add_url_rule("/schools/", view_func=SchoolList.as_view("schools"))
@@ -189,9 +225,14 @@ bp.add_url_rule("/schools/<school_id>/topics/<topic_id>/posts/", view_func=Topic
 
 @bp.after_request
 def after_request(response):
+    '''
+    A custom request handler that appends the universal cross domain headers
+    onto the response
+    '''
     header = response.headers
     header['Access-Control-Allow-Origin'] = '*'
     return response
+
 if __name__ == "__main__":
     app = Flask(__name__)
     app.register_blueprint(bp)

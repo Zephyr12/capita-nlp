@@ -9,6 +9,10 @@ import sources
 
 
 class sentiment:
+    '''
+    A callable object that computes the sentiment of any document and returns that updates that document's sentiment.
+    Used as a Processor callable
+    '''
     def __init__(self):
         self.sid = SentimentIntensityAnalyzer()
 
@@ -36,6 +40,9 @@ def evaluate(cls, msg):
     return ratio_score + initials_score
 
 class fuzzy_classifier:
+    '''
+        A fuzzy regexp based classifier that tries to recognize named entities from it's list of possible classifications.
+    '''
 
     def __init__(self, classifications):
         self.classes = [(cls, re.compile(fuzz(cls), flags=re.IGNORECASE)) for cls in classifications]

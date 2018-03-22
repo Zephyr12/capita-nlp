@@ -1,32 +1,39 @@
 import unittest
 from src import pipes
 import unittest
+import time
 import os
 from scrapy.http import Response, Request, TextResponse
-from src.scrapy.the_student_room.spiders import the_student_room_spider
+from src.my_scrapers.the_student_room.spiders import the_student_room_spider
 from unittest.mock import Mock, call
 
 
 class PipesTestSuite(unittest.TestCase):
 
     def test_source(self):
+        '''
+        Test if a source iterates through the list and dispatches the correct
+        data to its output nodes
+        '''
         output = Mock()
-        output.process = Mock()
+        output.queue = Mock()
         lst = [1, "fish", ["arr", "bar"], {"one time": "no mangle"}]
-        source = pipes.Source(lambda x: lst)
-        source.add_out_pipe(output)
-        source.run().join()
-        output.process.assert_has_calls([call(l) for l in lst], any_order=True)
+        source = pipes.Source([output], lambda: lst)
+        time.sleep(0.05)
+        output.queue.assert_has_calls([call(l) for l in lst], any_order=True)
 
     def test_processor(self):
+        '''
+        Test if a processor applies it's operation to any queued value and
+        forwards the result to it's output node
+        '''
         output = Mock()
-        output.process = Mock()
-        processor = pipes.Processor(lambda x: [x * x])
-        processor.add_out_pipe(output)
-        processor.process(1)
-        processor.process(2)
-        processor.process(3)
-        output.process.assert_has_calls([call(l * l) for l in [1, 2, 3]], any_order=False)
+        output.queue = Mock()
+        processor = pipes.Processor([output], lambda x: [x * x])
+        processor.queue(1)
+        processor.queue(2)
+        processor.queue(3)
+        output.queue.assert_has_calls([call(l * l) for l in [1, 2, 3]], any_order=False)
 
 
 def fake_response_from_file(file_name, url=None):

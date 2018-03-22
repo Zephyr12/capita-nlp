@@ -9,8 +9,15 @@ Message = dict
 #class BufferedIterator():
 
 class Source:
+    '''
+    A node that produces a stream of objects
+    '''
 
     def __init__(self, sinks, source):
+        '''
+        :param sinks: A list of nodes that the output of this source needs to be sent to
+        :param source: A function that returns an iterable of objects
+        '''
         self.source = source
         self.processors = sinks
         thread = threading.Thread(target=lambda: self.start())
@@ -22,8 +29,18 @@ class Source:
                 processor.queue(item)
 
 class Processor:
+    '''
+    A node that performs an operation on a stream of objects
+    '''
 
     def __init__(self, sinks, process):
+        '''
+        :param sinks: A list of nodes that the output of this processor needs
+        to be sent to
+
+        :param process: A function takes an object and returns an iterable of
+        objects this describes the operator that the processor node defines
+        '''
         self.process = process
         self.todo = []
         self.sinks = sinks
@@ -38,6 +55,9 @@ class Processor:
         threading.Thread(target=lambda: self.dispatch(item)).start()
 
 class Join:
+    '''
+    A node that fuses two or more streams of objects
+    '''
 
     def __init__(self, sinks, key_func, count=2):
         self.key_func = key_func
@@ -59,8 +79,14 @@ class Join:
             self.buffer[self.key_func(item)] = [item]
 
 class Writer:
+    '''
+    A node that consumes a stream of objects
+    '''
 
     def __init__(self, writer):
+        '''
+        :param writer: A function takes an object and consumes it not passing it on any further
+        '''
         self.writer = writer
 
     def queue(self, item):
