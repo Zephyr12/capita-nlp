@@ -241,17 +241,58 @@
 						</div>
 
 
+								<div class="gtco-container">
+									<div class="row animate-box">
+										<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
+											<br><br><br><br>
+											<h2>Written Tests</h2>
+												Even with rich documentation, some function behaviours might not be clear for the users.
+												Test are not only a form of documentation, but also a proof of correctness. They provide
+												value when refactoring and allows developers to confidently make changes or add
+												new features.
+												<br><br>
+												For example, if a user of the API wants to extent the functionalities of
+												the scraper, or wants to understand how it behaves, reading the contracts
+												of the crawler will give him enough insight on what it should return. If the
+												last parsing level of the spider takes a given topic URL, it should at least
+												return 1 item (as every topic has at least one post) and return the mandatory
+												fields: concerned university and the raw text (the post itself).
+											</div>
+										</div>
+<pre class="prettyprint"><code>
 
-	<!-- <footer id="gtco-footer" role="contentinfo">
+    def parse3(self, response):
+        """ This function parses a sample response. Some contracts are mingled
+            with this docstring.
+            This is the THIRD and LAST LEVEL PARSE that extracts all the posts
+            present in a topic, and also repeats the procedure for every next
+            page if existent.
+            This function yields the desired results: raw_text post together
+            with the university name that it relates to.
+            @url https://www.thestudentroom.co.uk/showthread.php?t=5152190
+            @returns items 1
+            @scrapes concerns raw_text
+            @url https://www.thestudentroom.co.uk/showthread.php?t=4922988
+            @returns items 1
+            @scrapes concerns raw_text
+
+       """
+</code></pre>
+									</div>
+
+
+
+
+<footer id="gtco-footer" role="contentinfo">
 		<div class="gtco-container">
 			<div class="row copyright">
 				<div class="col-md-12">
 					<p class="pull-left">
-						<small class="block">&copy; lalala. All Rights Reserved.</small>
+						<small class="block">&copy;All Rights Reserved.</small>
 					</p>
 				</div>
 			</div>
-		</div> -->
+		</div>
 	</footer>
 </div>
 
