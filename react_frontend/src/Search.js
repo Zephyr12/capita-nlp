@@ -4,11 +4,12 @@ import Suggestions from './Suggestions';
 import Autosuggest from 'react-autosuggest';
 import { Switch, Route } from 'react-router-dom';
 import SchoolDetails from './SchoolDetails';
+import './Search.css';
 
 
 /*change KEY and URL in order to make a request to the schools API endpoint*/
 
-const API_URL = 'http://a967da8e.ngrok.io'
+const API_URL = 'http://127.0.0.1:5000'
 
 
 
@@ -70,7 +71,7 @@ class Search extends Component {
   render() {
     return (
       <form>
-        <input
+        <input class = "Search"
           placeholder="Search for..."
           ref={input => this.search = input}
           onChange={this.handleInputChange} />
