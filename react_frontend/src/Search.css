@@ -1,0 +1,28 @@
+.Search{
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top: 10%;
+  width: 40%;
+  height:50px;
+  border: 2px solid;
+  border-color: #92a8d1;
+  border-radius: 8px;
+  font-size: 100%;
+  text-indent: 5%;
+}
+
+.TextStyle{
+	font-size: 150%;
+	text-align: center;
+}
+
+.List{
+	font-size: 110%;
+	text-align: center;
+	list-style-position: inside;
+}
+
+/*.DottedBox_content {
+  font-size: 15px;
+  text-align: center;
+}*/
