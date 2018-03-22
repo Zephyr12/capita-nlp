@@ -72,10 +72,10 @@
 							<div class="display-tc">
 								<h1 class="animate-box" data-animate-effect="fadeInUp">Our Technologies</h1>
 								<br><br>
-								<h3><font color="white">Find below a list of all the technologies used in the process of our aplication.
- 									As we need to consider what possible technologies we might need to use for each
+								<h3><font color="white">Find below a list of all the technologies considered in the process of our aplication.</font></h3>
+ 									<!-- As we need to consider what possible technologies we might need to use for each
 									specific component, our research is conducted to evaluate what alternatives do we have
-									and which are most appropriate for our purpose.</font></h3>
+									and which are most appropriate for our purpose. -->
 								</div>
 							</div>
 						</div>
@@ -127,29 +127,154 @@
 								<b><h3><font color="white">WHY FACEBOOK API?</font></h3></b>
 								<p>
 									In order to create a Facebook pipeline, we had a few options: either using the
-									<a href="http://facebook-sdk.readthedocs.io/en/latest/index.html">Facebook provided SDK for Python</a>[1],
-									or use other libraries that try to make it easier for the developers to work with the API. We decided that using
-									other libraries would make our initial developing process easy (achieving a working Facebook pipeline), but it would
-									come with risks that we could not take such as unwanted and unknown specific bugs inside that library, as they are
-									not meant to be used for scraping. Because our system is so complex and the Data Pipeline component is the first
-									component of it, we thought that using the Facebook provided API is the best solution, despite it's poor documentation
-									and deprecated functionalities in time[2].
-								</p>
+									<a href="http://facebook-sdk.readthedocs.io/en/latest/index.html">Facebook provided SDK for Python</a>[1], or use other libraries that would ease the work with the API for the developers. Although using other libraries would have made our initial developing process more easy (achieving a working Facebook pipeline), it would have come with risks that we could not take such as unwanted and unknown specific bugs inside that library, as they are not meant to be used for scraping. Considering our system complexity and the fact that Data Pipeline is our initial component, we decided on using the Facebook provided API, despite its poor documentation
+									and deprecated functionalities in time[2].</p>
 								<br>
 								<b><h3><font color="white">RAISED ISSUES</font></h3></b>
+								<p>As we have specified the deprecated functionalities, we came to realise that Facebook did provide support for Public Feed API (which was our main request for scraping the desired information), but <b>they <a href="https://developers.facebook.com/docs/public_feed/">restricted</a>the access to the Feed API back in 2015</b> - which left us wondering what solution is most appropriate in order to get the desired information from Facebook.</p>
+									
+								<b><h3><font color="white">SOLUTION</font></h3></b>
+								<p>Even though we could not make use of the public feed of Facebook posts, we could still make <b>search query requests</b> to the Facebook API. As a result, we can have access to search events that are related to any UK Educational Institution. Thus, this pipeline is set up to yield event descriptions (together with other relevant information as concerned university, location, dates).</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="gtco-portfolio" class="gtco-section">
+					<div class="gtco-container">
+						<div class="row">
+							<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
+								<h2 id="scrapy-pipeline">Scraping The Student Room with SCRAPY</h2>
+								<b><h3><font color="white">WHY SCRAPY?</font></h3></b>
 								<p>
-									As we have specified the deprecated functionalities, we came to realise that Facebook did provide support for
-									Public Feed API (which was our main request for scraping the desired information), but <b>they
-										<a href="https://developers.facebook.com/docs/public_feed/">restricted</a> the access
-										to the Feed API back in 2015</b> - which left us wondering what solution is most appropriate in order to get
-										the desired information from Facebook.
+									In order to store all the posts relating the Universities in UK that are found on The Student Room forum,
+									we had two options:
+									<a href="https://scrapy.org/">Scrapy</a>[3]
+									or
+									<a href="https://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a>.
+								</p>
+								<p>
+									While BeautifulSoup is just a <b>library</b> for parsing html(and xml) style documents,
+									Scrapy is a <b>full framework</b> for web crawling which provides the tools to manage every stage of web
+									crawl - tools	that come with certain advantages. Some of these tools are:
+									<ol>
+										<li>
+											Request manager: provides the speed of cuncurrency without needing to invest time in developing the
+											concurrent architecture, as it is all done behind the scenes.
+										</li>
+										<li>
+											Selectors: which are used to parse the HTML documents in order to find the bits that are needed to be
+											parsed. (BeautifulSoup also does this).
+										</li>
+										<li>
+											Pipelines: once the data is retrieved, it can be <b>passed through various pipelines</b>, which
+											serves the purpose of our application.
+										</li>
+									</ol></p>
+									<p>
+										As a result, we decided that Scrapy will be not only easier to implement (which also brings the advantage
+										of being <b>easier to debug and maintain</b>), but actually faster because of the way it handles cocunrrency.
+									</p>
+									<br>
+									<b><h3><font color="white">RAISED ISSUES</font></h3></b>
+									<p>
+										Because of the way Scrapy works, even though it produced the desired output on it's own (yielding
+										forum posts), it did not behave as expected when we tried to merge the pipelines.
+										Scrapy runs more threads in order to be faster and more efficient, but in order to be able to send
+										signals between these threads, it needs to run on the main one in order - which it didn't at the
+										stage of merging the pipes.
 									</p>
 									<b><h3><font color="white">SOLUTION</font></h3></b>
 									<p>
-										Even though we could not make use of the public feed of Facebook posts, we could still make <b>search
-											query requests</b> to the Facebook API. As a result, we can have access to search events that are
-											related to any UK Educational Institution. Thus, this pipeline is set up to yield event descriptions
-											(together with other relevant information as concerned university, location, dates).
+										Looked up the Source Code for Scrapy to understand how it starts its crawler and then modified the
+										thread invocation.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="gtco-portfolio" class="gtco-section">
+						<div class="gtco-container">
+							<div class="row">
+								<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
+									<h2 id="twitter-pipeline">Twitter Data Pipeline</h2>
+									<b><h3><font color="white">WHY TWEEPY?</font></h3></b>
+									<p>
+										<a href="http://tweepy.readthedocs.io/en/v3.6.0/">tweepy</a>[4] is good
+									</p>
+
+
+									<br>
+									<b><h3><font color="white">RAISED ISSUES</font></h3></b>
+									<p>
+										never
+									</p>
+									<b><h3><font color="white">SOLUTION</font></h3></b>
+									<p>
+										xDxDxD
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="data-transformation">
+						<div class="gtco-container">
+							<div class="row animate-box">
+								<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
+									<br><br><br><br>
+									<h2>Data Transformation and Feature Extraction</h2>
+									<p>
+										These technologies are related to the <b>meaning</b> of the data that is fetched by the data mining
+										pipeline. In other words, these are responsible for producing the insight about the data that
+										we are collecting.
+									</p>
+									<p>
+										We used <a href="#gensim">gensim</a> for topic modelling and
+										<a href="#nltk">nltk</a> for Named-Entity Recogniser(NER) and Sentiment Analysis.
+									</p>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="gtco-portfolio" class="gtco-section">
+							<div class="gtco-container">
+								<div class="row">
+									<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
+										<h2 id="gensim">GENSIM</h2>
+										<b><h3><font color="white">WHY GENSIM?</font></h3></b>
+										<p>
+											<a href="https://radimrehurek.com/gensim/">Gensim</a>[5] is a free Python library designed for topic
+											modelling. It presents a lot of advantages and seemed to be the most accessible technology
+											for our purpose at this level. Some of the useful advantages for our system are:
+											<ul>
+												<li>Scalability: Gensim can process large, web-scale corpora, using incremental online training
+													algorithms. There is no need for the whole input corpus to reside fully in RAM at any one time.
+												</li>
+													<li>It is Platform Independent: Being pure Python, gensim runs on Linux, Windows and OS X,
+														as well as any other platform that supports Python and NumPy.
+													</li>
+													<li>
+														Provides efficient implementations: The core algorithms in gensim use highly
+														optimized math routines. Gensim also contains a distributed version of several algorithms,
+														intended to speed up processing and retrieval on machine clusters.
+													</li>
+											</ul>
+										</p>
+
+
+										<br>
+										<b><h3><font color="white">RAISED ISSUES</font></h3></b>
+										<p>
+											Because of the complexity of this advanced process, gensim lda models needed a lot of time
+											and data for training - resources that were not available for the scale of our system.
+										</p>
+										<b><h3><font color="white">SOLUTION</font></h3></b>
+										<p>
+											We used Google's pre-trained word2vec corpus in order to achieve the necessary output from our system.
 										</p>
 									</div>
 								</div>
@@ -160,51 +285,37 @@
 							<div class="gtco-container">
 								<div class="row">
 									<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
-										<h2 id="scrapy-pipeline">Scraping The Student Room with SCRAPY</h2>
-										<b><h3><font color="white">WHY SCRAPY?</font></h3></b>
+										<h2 id="nltk">NLTK</h2>
+										<b><h3><font color="white">WHY NLTK?</font></h3></b>
 										<p>
-											In order to store all the posts relating the Universities in UK that are found on The Student Room forum,
-											we had two options:
-											<a href="https://scrapy.org/">Scrapy</a>[3]
-											or
-											<a href="https://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a>.
+											Our options for language processing were <a href="https://spacy.io/">spaCy</a> and
+											<a href="https://www.nltk.org/">nltk</a>[6]. The difference between these two technologies
+											is that spaCy represents an Industrial-Strenght Natural Language Processing while NLTK is
+											designed to be a good starting point in this area (students, researchers).
 										</p>
 										<p>
-											While BeautifulSoup is just a <b>library</b> for parsing html(and xml) style documents,
-											Scrapy is a <b>full framework</b> for web crawling which provides the tools to manage every stage of web
-											crawl - tools	that come with certain advantages. Some of these tools are:
-											<ol>
-												<li>
-													Request manager: provides the speed of cuncurrency without needing to invest time in developing the
-													concurrent architecture, as it is all done behind the scenes.
-												</li>
-												<li>
-													Selectors: which are used to parse the HTML documents in order to find the bits that are needed to be
-													parsed. (BeautifulSoup also does this).
-												</li>
-												<li>
-													Pipelines: once the data is retrieved, it can be <b>passed through various pipelines</b>, which
-													serves the purpose of our application.
-												</li>
-											</ol></p>
-											<p>
-												As a result, we decided that Scrapy will be not only easier to implement (which also brings the advantage
-												of being <b>easier to debug and maintain</b>), but actually faster because of the way it handles cocunrrency.
-											</p>
-											<br>
-											<b><h3><font color="white">RAISED ISSUES</font></h3></b>
-											<p>
-												Because of the way Scrapy works, even though it produced the desired output on it's own (yielding
-												forum posts), it did not behave as expected when we tried to merge the pipelines.
-												Scrapy runs more threads in order to be faster and more efficient, but in order to be able to send
-												signals between these threads, it needs to run on the main one in order - which it didn't at the
-												stage of merging the pipes.
-											</p>
-											<b><h3><font color="white">SOLUTION</font></h3></b>
-											<p>
-												Looked up the Source Code for Scrapy to understand how it starts its crawler and then modified the
-												thread invocation.
-											</p>
+											Moreover, spaCy is faster at Word Tokenization and Part-Of-Speech Tagging, while NLTK is
+											faster at Sentence Tokenization - the last one being our system scope. Thus, we considered
+											that in our case it is would be the best decision to chose NLTK over spaCy as it provides
+											more support and is faster in the area that are mostly concerned about.
+										</p>
+										<br>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="data-storage">
+							<div class="gtco-container">
+								<div class="row animate-box">
+									<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
+										<br><br><br><br>
+										<h2>Data Storage</h2>
+										<p>
+											<a href="#postgresql">PostgreSQL</a>
+										</p>
+
+											<br><br>
 										</div>
 									</div>
 								</div>
@@ -214,10 +325,10 @@
 								<div class="gtco-container">
 									<div class="row">
 										<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
-											<h2 id="twitter-pipeline">Twitter Data Pipeline</h2>
-											<b><h3><font color="white">WHY TWEEPY?</font></h3></b>
+											<h2 id="postgresql">PostgreSQL</h2>
+											<b><h3><font color="white">WHY POSTGRESQL?</font></h3></b>
 											<p>
-												<a href="http://tweepy.readthedocs.io/en/v3.6.0/">tweepy</a>[4] is good
+												<a href="https://www.postgresql.org/">postgresql</a> is good
 											</p>
 
 
@@ -235,157 +346,30 @@
 								</div>
 							</div>
 
-							<div id="data-transformation">
-								<div class="gtco-container">
-									<div class="row animate-box">
-										<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
-											<br><br><br><br>
-											<h2>Data Transformation and Feature Extraction</h2>
-											<p>
-												These technologies are related to the <b>meaning</b> of the data that is fetched by the data mining
-												pipeline. In other words, these are responsible for producing the insight about the data that
-												we are collecting.
-											</p>
-											<p>
-												We used <a href="#gensim">gensim</a> for topic modelling and
-												<a href="#nltk">nltk</a> for Named-Entity Recogniser(NER) and Sentiment Analysis.
-											</p>
+					</div>
 
-											</div>
-										</div>
-									</div>
+
+
+					<footer id="gtco-footer" role="contentinfo">
+						<div class="gtco-container">
+							<div class="row copyright">
+								<div class="col-md-12">
+									<p class="pull-left">
+										<h2>References:</h2>
+										<font color="black">
+										<li>[1] Facebook SDK for Python Documentation (Version 2.0.0). Available at: http://facebook-sdk.readthedocs.io/en/latest/index.html (Acceessed: 22 March 2018)</li>
+										<li>[2] Facebook Documentation Changelog (2018). Available at: https://developers.facebook.com/docs/graph-api/changelog/ (Accessed: 20 March 2018)</li>
+										<li>[3] Scrapy Documentation (Version 1.5). Available at: https://docs.scrapy.org/en/latest/ (Accessed: 22 March 2018)</li>
+										<li>[4] Tweepy Documentation (Version 3.6.0). Available at: http://tweepy.readthedocs.io/en/v3.6.0/ (Accessed: 22 March 2018)</li>
+										<li>[5] Gensim API References (Mar 2018). Available at: https://radimrehurek.com/gensim/apiref.html (Accessed: 22 March 2018)</li>
+										<li>[6] NLTK Package Documentation (Version 3.2.4). Available at: https://www.nltk.org/api/nltk.html (Accessed: 22 March 2018)</li>
+									</font>
+									</p>
 								</div>
-
-								<div id="gtco-portfolio" class="gtco-section">
-									<div class="gtco-container">
-										<div class="row">
-											<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
-												<h2 id="gensim">GENSIM</h2>
-												<b><h3><font color="white">WHY GENSIM?</font></h3></b>
-												<p>
-													<a href="https://radimrehurek.com/gensim/">Gensim</a>[5] is a free Python library designed for topic
-													modelling. It presents a lot of advantages and seemed to be the most accessible technology
-													for our purpose at this level. Some of the useful advantages for our system are:
-													<ul>
-														<li>Scalability: Gensim can process large, web-scale corpora, using incremental online training
-															algorithms. There is no need for the whole input corpus to reside fully in RAM at any one time.
-														</li>
-															<li>It is Platform Independent: Being pure Python, gensim runs on Linux, Windows and OS X,
-																as well as any other platform that supports Python and NumPy.
-															</li>
-															<li>
-																Provides efficient implementations: The core algorithms in gensim use highly
-																optimized math routines. Gensim also contains a distributed version of several algorithms,
-																intended to speed up processing and retrieval on machine clusters.
-															</li>
-													</ul>
-												</p>
-
-
-												<br>
-												<b><h3><font color="white">RAISED ISSUES</font></h3></b>
-												<p>
-													Because of the complexity of this advanced process, gensim lda models needed a lot of time
-													and data for training - resources that were not available for the scale of our system.
-												</p>
-												<b><h3><font color="white">SOLUTION</font></h3></b>
-												<p>
-													We used Google's pre-trained word2vec corpus in order to achieve the necessary output from our system.
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div id="gtco-portfolio" class="gtco-section">
-									<div class="gtco-container">
-										<div class="row">
-											<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
-												<h2 id="nltk">NLTK</h2>
-												<b><h3><font color="white">WHY NLTK?</font></h3></b>
-												<p>
-													Our options for language processing were <a href="https://spacy.io/">spaCy</a> and
-													<a href="https://www.nltk.org/">nltk</a>[6]. The difference between these two technologies
-													is that spaCy represents an Industrial-Strenght Natural Language Processing while NLTK is
-													designed to be a good starting point in this area (students, researchers).
-												</p>
-												<p>
-													Moreover, spaCy is faster at Word Tokenization and Part-Of-Speech Tagging, while NLTK is
-													faster at Sentence Tokenization - the last one being our system scope. Thus, we considered
-													that in our case it is would be the best decision to chose NLTK over spaCy as it provides
-													more support and is faster in the area that are mostly concerned about.
-												</p>
-												<br>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div id="data-storage">
-									<div class="gtco-container">
-										<div class="row animate-box">
-											<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
-												<br><br><br><br>
-												<h2>Data Storage</h2>
-												<p>
-													<a href="#postgresql">PostgreSQL</a>
-												</p>
-
-													<br><br>
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div id="gtco-portfolio" class="gtco-section">
-										<div class="gtco-container">
-											<div class="row">
-												<div class="col-md-12 col-md-offset-0 text-center gtco-heading animate-box">
-													<h2 id="postgresql">PostgreSQL</h2>
-													<b><h3><font color="white">WHY POSTGRESQL?</font></h3></b>
-													<p>
-														<a href="https://www.postgresql.org/">postgresql</a> is good
-													</p>
-
-
-													<br>
-													<b><h3><font color="white">RAISED ISSUES</font></h3></b>
-													<p>
-														never
-													</p>
-													<b><h3><font color="white">SOLUTION</font></h3></b>
-													<p>
-														xDxDxD
-													</p>
-												</div>
-											</div>
-										</div>
-									</div>
-
 							</div>
-
-
-
-							<footer id="gtco-footer" role="contentinfo">
-								<div class="gtco-container">
-									<div class="row copyright">
-										<div class="col-md-12">
-											<p class="pull-left">
-												<h2>References:</h2>
-												<font color="black">
-												<li>[1] Facebook SDK for Python Documentation (Version 2.0.0). Available at: http://facebook-sdk.readthedocs.io/en/latest/index.html (Acceessed: 22 March 2018)</li>
-												<li>[2] Facebook Documentation Changelog (2018). Available at: https://developers.facebook.com/docs/graph-api/changelog/ (Accessed: 20 March 2018)</li>
-												<li>[3] Scrapy Documentation (Version 1.5). Available at: https://docs.scrapy.org/en/latest/ (Accessed: 22 March 2018)</li>
-												<li>[4] Tweepy Documentation (Version 3.6.0). Available at: http://tweepy.readthedocs.io/en/v3.6.0/ (Accessed: 22 March 2018)</li>
-												<li>[5] Gensim API References (Mar 2018). Available at: https://radimrehurek.com/gensim/apiref.html (Accessed: 22 March 2018)</li>
-												<li>[6] NLTK Package Documentation (Version 3.2.4). Available at: https://www.nltk.org/api/nltk.html (Accessed: 22 March 2018)</li>
-											</font>
-											</p>
-										</div>
-									</div>
-								</div>
-							</footer>
 						</div>
+					</footer>
+				</div>
 
 						<div class="gototop js-top">
 							<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
