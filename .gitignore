@@ -1,0 +1,8 @@
+results/*
+venv/*
+src/facebookenv/*
+.idea/*
+__pycache__/
+data/*
+!data/schools.csv
+.DS_STORE
